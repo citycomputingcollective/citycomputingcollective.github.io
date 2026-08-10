@@ -18,23 +18,37 @@ body:
     validations: {required: true}
   - type: input
     id: geography
-    attributes: {label: City or geography, placeholder: City, region, countries, or global}
-    validations: {required: true}
+    attributes:
+      label: City or geography
+      placeholder: City, region, countries, or global
+    validations:
+      required: true
   - type: textarea
     id: data_methods
-    attributes: {label: Available data and intended methods, description: Include access or licensing constraints.}
-    validations: {required: true}
+    attributes:
+      label: Available data and intended methods
+      description: Include access or licensing constraints.
+    validations:
+      required: true
   - type: textarea
     id: expertise
-    attributes: {label: Expertise needed, description: Be specific about roles and expected contributions.}
-    validations: {required: true}
+    attributes:
+      label: Expertise needed
+      description: Be specific about roles and expected contributions.
+    validations:
+      required: true
   - type: textarea
     id: commitment
-    attributes: {label: Time, output, and credit expectations, description: State time commitment, intended output, authorship or credit, and deadline.}
-    validations: {required: true}
+    attributes:
+      label: Time, output, and credit expectations
+      description: State time commitment, intended output, authorship or credit, and deadline.
+    validations:
+      required: true
   - type: input
     id: links
-    attributes: {label: Relevant public links, placeholder: Repository, paper, proposal, or project page}
+    attributes:
+      label: Relevant public links
+      placeholder: Repository, paper, proposal, or project page
   - type: checkboxes
     id: conduct
     attributes:

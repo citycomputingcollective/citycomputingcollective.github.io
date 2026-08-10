@@ -3,28 +3,46 @@ labels: []
 body:
   - type: dropdown
     id: kind
-    attributes: {label: Resource type, options: [Code repository, Software tool, Research method, Map or dashboard, Tutorial or workflow]}
-    validations: {required: true}
+    attributes:
+      label: Resource type
+      options:
+        - Code repository
+        - Software tool
+        - Research method
+        - Map or dashboard
+        - Tutorial or workflow
+    validations:
+      required: true
   - type: input
     id: name
-    attributes: {label: Name and public URL}
-    validations: {required: true}
+    attributes:
+      label: Name and public URL
+    validations:
+      required: true
   - type: textarea
     id: problem
-    attributes: {label: Urban problem and intended users}
-    validations: {required: true}
+    attributes:
+      label: Urban problem and intended users
+    validations:
+      required: true
   - type: textarea
     id: io
-    attributes: {label: Inputs, outputs, installation, and example use}
-    validations: {required: true}
+    attributes:
+      label: Inputs, outputs, installation, and example use
+    validations:
+      required: true
   - type: input
     id: license
-    attributes: {label: License and version}
-    validations: {required: true}
+    attributes:
+      label: License and version
+    validations:
+      required: true
   - type: textarea
     id: validation
-    attributes: {label: Validation, limitations, and maintenance status}
-    validations: {required: true}
+    attributes:
+      label: Validation, limitations, and maintenance status
+    validations:
+      required: true
   - type: checkboxes
     id: conduct
     attributes:

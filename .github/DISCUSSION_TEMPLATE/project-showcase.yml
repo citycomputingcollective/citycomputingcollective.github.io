@@ -3,30 +3,43 @@ labels: []
 body:
   - type: input
     id: title
-    attributes: {label: Project title}
-    validations: {required: true}
+    attributes:
+      label: Project title
+    validations:
+      required: true
   - type: textarea
     id: question
-    attributes: {label: Research question and urban context}
-    validations: {required: true}
+    attributes:
+      label: Research question and urban context
+    validations:
+      required: true
   - type: dropdown
     id: status
     attributes:
       label: Current status
       options: [Idea, Team forming, Active, Seeking feedback, Released, Completed]
-    validations: {required: true}
+    validations:
+      required: true
   - type: textarea
     id: team
-    attributes: {label: Team and roles, description: Name contributors only with their permission.}
-    validations: {required: true}
+    attributes:
+      label: Team and roles
+      description: Name contributors only with their permission.
+    validations:
+      required: true
   - type: textarea
     id: methods
-    attributes: {label: Geography, data, and methods}
-    validations: {required: true}
+    attributes:
+      label: Geography, data, and methods
+    validations:
+      required: true
   - type: textarea
     id: outputs
-    attributes: {label: Outputs and contribution pathways, description: Link code, data, papers, demos, or explain how others can help.}
-    validations: {required: true}
+    attributes:
+      label: Outputs and contribution pathways
+      description: Link code, data, papers, demos, or explain how others can help.
+    validations:
+      required: true
   - type: checkboxes
     id: conduct
     attributes:
