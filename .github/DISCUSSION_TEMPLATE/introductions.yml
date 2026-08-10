@@ -1,0 +1,53 @@
+title: "[Introduction] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: "Welcome to the City Computing Collective. Share only information you are comfortable making public."
+  - type: input
+    id: role
+    attributes:
+      label: Name or preferred name and current role
+      placeholder: Researcher, student, practitioner, community member, or other role
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: City, region, and time zone
+      placeholder: Share only the level of location detail you prefer
+    validations:
+      required: true
+  - type: textarea
+    id: interests
+    attributes:
+      label: Urban questions and research themes
+      description: What city problems or systems are you interested in?
+    validations:
+      required: true
+  - type: textarea
+    id: methods
+    attributes:
+      label: Methods, data, and experience
+      description: What approaches do you use or want to learn?
+    validations:
+      required: true
+  - type: textarea
+    id: collaboration
+    attributes:
+      label: Collaboration goals
+      description: What can you offer, and who would you like to meet?
+    validations:
+      required: true
+  - type: input
+    id: links
+    attributes:
+      label: Optional public links
+      placeholder: GitHub, ORCID, Scholar, website, project, or publication
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Community agreement
+      options:
+        - label: I will follow the Code of Conduct and will not share private or restricted information.
+          required: true
