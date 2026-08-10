@@ -1,0 +1,34 @@
+title: "[Data] "
+labels: []
+body:
+  - type: dropdown
+    id: kind
+    attributes: {label: Post type, options: [Share a dataset, Request data, Ask about data quality or access]}
+    validations: {required: true}
+  - type: input
+    id: name
+    attributes: {label: Dataset or data need}
+    validations: {required: true}
+  - type: textarea
+    id: coverage
+    attributes: {label: Geography, time, resolution, variables, and format}
+    validations: {required: true}
+  - type: input
+    id: license
+    attributes: {label: License and access conditions, placeholder: Public URL, license, application, purchase, or restricted access}
+    validations: {required: true}
+  - type: textarea
+    id: provenance
+    attributes: {label: Provenance, processing, and known limitations}
+    validations: {required: true}
+  - type: textarea
+    id: use
+    attributes: {label: Intended use or research question}
+    validations: {required: true}
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Data rights
+      options:
+        - label: I have permission to share these links and have described access restrictions accurately.
+          required: true
