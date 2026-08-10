@@ -1,0 +1,34 @@
+title: "[Opportunity] "
+labels: []
+body:
+  - type: dropdown
+    id: kind
+    attributes: {label: Opportunity type, options: [Call for papers, Grant or funding, Challenge or hackathon, PhD or MSc, Internship, Postdoc, Faculty, Industry, Public sector or nonprofit, Other]}
+    validations: {required: true}
+  - type: input
+    id: title
+    attributes: {label: Official title and organization}
+    validations: {required: true}
+  - type: input
+    id: deadline
+    attributes: {label: Deadline and time zone}
+    validations: {required: true}
+  - type: textarea
+    id: eligibility
+    attributes: {label: Eligibility, location, and funding or compensation}
+    validations: {required: true}
+  - type: input
+    id: official
+    attributes: {label: Official URL}
+    validations: {required: true}
+  - type: textarea
+    id: relevance
+    attributes: {label: Relevance to city computing}
+    validations: {required: true}
+  - type: checkboxes
+    id: accuracy
+    attributes:
+      label: Accuracy
+      options:
+        - label: I verified this information against the official source and disclosed any relationship to the opportunity.
+          required: true
