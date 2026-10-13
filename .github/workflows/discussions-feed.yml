@@ -1,0 +1,43 @@
+name: Refresh discussions feed
+
+# Exports GitHub Discussions to data/discussions.json so the static site can show a live feed.
+# Runs on a schedule, on demand, and whenever a discussion or comment changes.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+  discussion:
+    types: [created, edited, deleted, transferred, category_changed, answered, unanswered]
+  discussion_comment:
+    types: [created, deleted]
+
+permissions:
+  contents: write
+  discussions: read
+
+concurrency:
+  group: discussions-feed
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Export discussions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/refresh-discussions.sh "${{ github.repository_owner }}" "${{ github.event.repository.name }}" data/discussions.json
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/discussions.json; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/discussions.json
+          git commit -m "Refresh discussions feed"
+          git push

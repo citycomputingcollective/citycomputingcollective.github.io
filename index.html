@@ -3,20 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="City Computing Collective is an open global community for people using spatial data, sensing, simulation, and AI to understand cities.">
   <title>City Computing Collective — Open Computational Urban Research</title>
+  <meta name="description" content="City Computing Collective is an open global community for people using spatial data, sensing, simulation, and AI to understand cities.">
+  <link rel="canonical" href="https://citycomputingcollective.com/">
+  <meta name="theme-color" content="#102a2e">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="City Computing Collective">
+  <meta property="og:title" content="City Computing Collective — Open Computational Urban Research">
+  <meta property="og:description" content="An open global community for people using spatial data, sensing, simulation, and AI to understand cities.">
+  <meta property="og:url" content="https://citycomputingcollective.com/">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a2e'/%3E%3Cpath d='M12 52L52 12' stroke='%232aa8b4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='7' fill='%23f36f45'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23f36f45'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="community.css">
 </head>
 <body>
-  <header><div class="nav"><a class="brand" href="index.html" aria-current="page"><span class="brand-mark" aria-hidden="true"></span>City Computing Collective</a><nav><a href="community.html">Community</a><a href="projects.html">Projects</a><a href="resources.html">Resources</a><a href="opportunities.html">Opportunities</a><a href="about.html">About</a><a class="join" href="join.html">Join</a></nav></div></header>
-  <main id="top">
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="nav">
+      <a class="brand" href="index.html" aria-current="page"><span class="brand-mark" aria-hidden="true"></span>City Computing Collective</a>
+      <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
+      <nav id="site-nav" aria-label="Primary">
+        <a href="community.html">Community</a>
+        <a href="projects.html">Projects</a>
+        <a href="resources.html">Resources</a>
+        <a href="opportunities.html">Opportunities</a>
+        <a href="about.html">About</a>
+        <a class="join" href="join.html">Join</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
     <section class="hero">
       <div class="hero-copy">
         <div class="eyebrow">Open computational urban research</div>
         <h1>Better cities need shared intelligence.</h1>
         <p class="lead">A global community for researchers, students, and practitioners using geospatial data, sensing, simulation, and AI to understand cities.</p>
         <p class="definition">Find collaborators, share datasets and tools, discuss research ideas, and turn urban questions into open, reproducible projects.</p>
-        <div class="actions"><a class="button primary" href="join.html">Join the Collective</a><a class="button light" href="community.html">Browse the community</a><a class="button signal" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=find-collaborators">Find collaborators</a></div>
+        <div class="actions">
+          <a class="button primary" href="join.html">Join the Collective</a>
+          <a class="button light" href="community.html">Browse the community</a>
+          <a class="button signal" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=find-collaborators">Find collaborators</a>
+        </div>
       </div>
       <aside class="urban-map" aria-label="Abstract urban systems network">
         <span class="map-label">Urban systems / open network</span>
@@ -44,25 +72,36 @@
           </g>
           <g fill="#17383d" stroke="#6b898c" stroke-width="1"><rect x="34" y="54" width="78" height="49" rx="4"/><rect x="447" y="63" width="70" height="52" rx="4"/><rect x="27" y="184" width="71" height="55" rx="4"/><rect x="435" y="326" width="82" height="61" rx="4"/></g>
         </svg>
-        <span class="map-status"><span class="live-dot"></span>Founding network · open for contributions</span>
+        <span class="map-status"><span class="live-dot"></span>Open network · public by default</span>
       </aside>
     </section>
 
-    <div class="pulse-strip" aria-label="Community status">
-      <div class="pulse-item"><strong>Public beta</strong><span>Open to read and explore</span></div>
-      <div class="pulse-item"><strong>7 structured post types</strong><span>From introductions to events</span></div>
-      <div class="pulse-item"><strong>Open governance</strong><span>Rules and decisions are documented</span></div>
-      <div class="pulse-item"><strong>GitHub-powered</strong><span>Free accounts, discussions, and notifications</span></div>
+    <div class="pulse-strip" aria-label="How the Collective works">
+      <div class="pulse-item"><em>01 · Read</em><strong>Public without an account</strong><span>Every discussion, project, and resource is open to read.</span></div>
+      <div class="pulse-item"><em>02 · Post</em><strong>Structured posts on GitHub</strong><span>A free account, and a template for each kind of post.</span></div>
+      <div class="pulse-item"><em>03 · Collaborate</em><strong>Find people by city and method</strong><span>Collaboration requests state question, data, and commitment.</span></div>
+      <div class="pulse-item"><em>04 · Release</em><strong>Documented outputs</strong><span>Data, code, models, and benchmarks released on the platforms.</span></div>
     </div>
 
     <section id="definition">
       <div class="definition-grid">
         <div><div class="eyebrow">What is city computing?</div><h2>Urban questions, computational methods, local knowledge.</h2></div>
-        <div><p class="definition-copy">City computing connects urban theory with spatial data and computation. It brings together urban science, GIS, sensing, simulation, data engineering, and responsible AI to study how cities work—and how urban knowledge can become more open, rigorous, and useful.</p><div class="method-stack" style="margin-top:26px"><div class="method"><span>Observe</span><strong>Sensing, imagery, mobility and administrative data</strong></div><div class="method"><span>Model</span><strong>Spatial analysis, simulation, ML and urban AI</strong></div><div class="method"><span>Interpret</span><strong>Urban theory, lived experience and local context</strong></div><div class="method"><span>Share</span><strong>Open data, code, benchmarks and research outputs</strong></div></div></div>
+        <div>
+          <p class="definition-copy">City computing connects urban theory with spatial data and computation. It brings together urban science, GIS, sensing, simulation, data engineering, and responsible AI to study how cities work, and how urban knowledge can become more open, rigorous, and useful.</p>
+          <div class="method-stack" style="margin-top:26px">
+            <div class="method"><span>Observe</span><strong>Sensing, imagery, mobility and administrative data</strong></div>
+            <div class="method"><span>Model</span><strong>Spatial analysis, simulation, ML and urban AI</strong></div>
+            <div class="method"><span>Interpret</span><strong>Urban theory, lived experience and local context</strong></div>
+            <div class="method"><span>Share</span><strong>Open data, code, benchmarks and research outputs</strong></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="community"><div class="eyebrow">Start with what you need</div><h2>Move from conversation to collaboration.</h2><p class="section-intro">Every pathway begins with a structured post, so people can understand the question, geography, data, methods, timeline, and contribution needed.</p>
+    <section id="pathways">
+      <div class="eyebrow">Start with what you need</div>
+      <h2>Move from conversation to collaboration.</h2>
+      <p class="section-intro">Every pathway begins with a structured post, so people can understand the question, geography, data, methods, timeline, and contribution needed.</p>
       <div class="grid">
         <article class="card"><span class="num">COLLABORATE</span><h3>Find the right people</h3><p>Connect urban questions with complementary methods, local knowledge, data access, and domain expertise.</p><a href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=find-collaborators">Start a collaboration &rarr;</a></article>
         <article class="card"><span class="num">SHARE</span><h3>Publish data and tools</h3><p>Document datasets, code, indicators, maps, models, and reusable urban research workflows.</p><a href="resources.html">Explore resource pathways &rarr;</a></article>
@@ -70,18 +109,58 @@
       </div>
     </section>
 
-    <section id="systems"><div class="eyebrow">Research across urban systems</div><h2>One city, many interacting systems.</h2><p class="section-intro">Research themes become common tags across discussions, projects, datasets, tools, and events.</p>
-      <div class="system-grid">
-        <div class="system"><span class="system-code">UC.01</span><strong>Mobility &amp; Transportation</strong></div><div class="system"><span class="system-code">UC.02</span><strong>Built Environment &amp; Land Use</strong></div><div class="system"><span class="system-code">UC.03</span><strong>Housing &amp; Urban Economics</strong></div><div class="system"><span class="system-code">UC.04</span><strong>Climate, Energy &amp; Resilience</strong></div><div class="system"><span class="system-code">UC.05</span><strong>Health, Equity &amp; Accessibility</strong></div><div class="system"><span class="system-code">UC.06</span><strong>Urban Sensing &amp; Spatial Data</strong></div><div class="system"><span class="system-code">UC.07</span><strong>Governance &amp; Participation</strong></div><div class="system"><span class="system-code">UC.08</span><strong>Urban AI &amp; Simulation</strong></div>
+    <section id="activity">
+      <div class="section-head">
+        <div><div class="eyebrow">Latest activity</div><h2>What the community is discussing.</h2></div>
+        <a class="more" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions">All discussions &rarr;</a>
+      </div>
+      <div class="feed" data-feed data-limit="6">
+        <div class="empty">
+          <div><strong>No discussions yet.</strong><p>The first post sets the tone. Introduce your work, or start a collaboration request.</p></div>
+          <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=introductions">Introduce yourself</a>
+        </div>
+        <p class="feed-note"><i aria-hidden="true"></i>Synced from GitHub Discussions.</p>
       </div>
     </section>
 
-    <section id="lifecycle"><div class="eyebrow">Open research lifecycle</div><h2>Ideas should become inspectable artifacts.</h2><p class="section-intro">The Collective supports the path from a well-framed city question to a team, evidence, feedback, and reusable outputs.</p>
-      <div class="lifecycle"><div class="life-step"><span>01 / QUESTION</span><strong>Frame the problem</strong><p>Define the urban context, stakeholders, and evidence gap.</p></div><div class="life-step"><span>02 / TEAM</span><strong>Connect expertise</strong><p>Bring together domain knowledge, methods, data, and place.</p></div><div class="life-step"><span>03 / BUILD</span><strong>Work in the open</strong><p>Share milestones, assumptions, limitations, and requests for feedback.</p></div><div class="life-step"><span>04 / RELEASE</span><strong>Publish the result</strong><p>Release documented code, data, papers, benchmarks, or tools.</p></div></div>
+    <section id="systems">
+      <div class="eyebrow">Research across urban systems</div>
+      <h2>One city, many interacting systems.</h2>
+      <p class="section-intro">Research themes are shared tags across discussions, projects, datasets, tools, and events. Select one to search the community for it.</p>
+      <div class="system-grid">
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=mobility+transportation"><span class="system-code">UC.01</span><strong>Mobility &amp; Transportation</strong></a>
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=built+environment+land+use"><span class="system-code">UC.02</span><strong>Built Environment &amp; Land Use</strong></a>
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=housing+economics"><span class="system-code">UC.03</span><strong>Housing &amp; Urban Economics</strong></a>
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=climate+energy+resilience"><span class="system-code">UC.04</span><strong>Climate, Energy &amp; Resilience</strong></a>
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=health+equity+accessibility"><span class="system-code">UC.05</span><strong>Health, Equity &amp; Accessibility</strong></a>
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=sensing+spatial+data"><span class="system-code">UC.06</span><strong>Urban Sensing &amp; Spatial Data</strong></a>
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=governance+participation"><span class="system-code">UC.07</span><strong>Governance &amp; Participation</strong></a>
+        <a class="system" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions?discussions_q=urban+AI+simulation"><span class="system-code">UC.08</span><strong>Urban AI &amp; Simulation</strong></a>
+      </div>
     </section>
 
-    <section id="join"><div class="callout"><div><div class="eyebrow" style="color:#365019">Founding community</div><h2>Help shape the Collective.</h2><p>Introduce your work, start the first collaborations, or contribute to the community infrastructure and governance.</p></div><a class="button primary" href="join.html">Join as a founding member</a></div></section>
+    <section id="join">
+      <div class="callout">
+        <div>
+          <div class="eyebrow" style="color:#365019">Early community</div>
+          <h2>Help shape the Collective.</h2>
+          <p>Introduce your work, start the first collaborations, or contribute to the community infrastructure and governance.</p>
+        </div>
+        <a class="button primary" href="join.html">Join as a founding member</a>
+      </div>
+    </section>
   </main>
-  <footer><span>&copy; 2026 City Computing Collective &middot; Founded by <a href="https://yuxuancai.com">Yuxuan Cai</a></span><div class="footer-links"><a href="about.html">Governance</a><a href="https://urbanscience.ai">Urban Science AI Lab</a><a href="https://urbanprobe.com">UrbanProbe</a><a href="https://xurbanai.com">XUrbanAI</a><a href="https://github.com/citycomputingcollective">GitHub</a></div></footer>
+
+  <footer>
+    <span>&copy; 2026 City Computing Collective &middot; Founded by <a href="https://yuxuancai.com">Yuxuan Cai</a></span>
+    <div class="footer-links">
+      <a href="about.html">Governance</a>
+      <a href="https://urbanscience.ai">Urban Science AI Lab</a>
+      <a href="https://urbanprobe.com">UrbanProbe</a>
+      <a href="https://xurbanai.com">XUrbanAI</a>
+      <a href="https://github.com/citycomputingcollective">GitHub</a>
+    </div>
+  </footer>
+  <script src="assets/site.js"></script>
 </body>
 </html>
