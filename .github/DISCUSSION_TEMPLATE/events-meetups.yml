@@ -8,9 +8,18 @@ body:
     validations:
       required: true
   - type: input
+    id: date
+    attributes:
+      label: Event date
+      description: The date of the event as YYYY-MM-DD, or the first day for a multi-day event. The website uses it to list upcoming events.
+      placeholder: "2026-11-20"
+    validations:
+      required: true
+  - type: input
     id: datetime
     attributes:
-      label: Date, time, and time zone
+      label: Time, duration, and time zone
+      placeholder: "15:00–16:30 UTC"
     validations:
       required: true
   - type: dropdown
@@ -40,6 +49,23 @@ body:
     id: description
     attributes:
       label: Audience, topics, accessibility, capacity, and recording information
+    validations:
+      required: true
+  - type: dropdown
+    id: themes
+    attributes:
+      label: Research themes
+      description: "Choose the themes this event covers."
+      multiple: true
+      options:
+        - "Mobility & Transportation"
+        - "Built Environment & Land Use"
+        - "Housing & Urban Economics"
+        - "Climate, Energy & Resilience"
+        - "Health, Equity & Accessibility"
+        - "Urban Sensing & Spatial Data"
+        - "Governance & Participation"
+        - "Urban AI & Simulation"
     validations:
       required: true
   - type: checkboxes

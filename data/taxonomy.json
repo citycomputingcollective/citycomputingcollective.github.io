@@ -1,0 +1,184 @@
+{
+  "$comment": "Shared by the website (assets/site.js), the export script (.github/scripts/export_discussions.py), and the discussion templates. Theme labels must match the 'Research themes' options in every template exactly; the export script checks this.",
+  "themes": [
+    {
+      "slug": "mobility",
+      "code": "UC.01",
+      "label": "Mobility & Transportation",
+      "blurb": "Movement, access, logistics, and the networks that carry them."
+    },
+    {
+      "slug": "built-environment",
+      "code": "UC.02",
+      "label": "Built Environment & Land Use",
+      "blurb": "Buildings, streets, land use, and how cities are designed and developed."
+    },
+    {
+      "slug": "housing",
+      "code": "UC.03",
+      "label": "Housing & Urban Economics",
+      "blurb": "Housing markets, affordability, displacement, and the urban economy."
+    },
+    {
+      "slug": "climate",
+      "code": "UC.04",
+      "label": "Climate, Energy & Resilience",
+      "blurb": "Heat, flooding, energy, and how cities prepare for and recover from shocks."
+    },
+    {
+      "slug": "health-equity",
+      "code": "UC.05",
+      "label": "Health, Equity & Accessibility",
+      "blurb": "Exposure, access to services, and who benefits from urban change."
+    },
+    {
+      "slug": "sensing",
+      "code": "UC.06",
+      "label": "Urban Sensing & Spatial Data",
+      "blurb": "Imagery, sensors, mobility traces, and the spatial data infrastructure behind them."
+    },
+    {
+      "slug": "governance",
+      "code": "UC.07",
+      "label": "Governance & Participation",
+      "blurb": "Public decisions, participation, and the institutions that shape cities."
+    },
+    {
+      "slug": "urban-ai",
+      "code": "UC.08",
+      "label": "Urban AI & Simulation",
+      "blurb": "Models, agents, digital twins, and simulations of urban systems."
+    }
+  ],
+  "categories": [
+    {
+      "slug": "introductions",
+      "label": "Introductions",
+      "short": "Introductions",
+      "action": "Introduce yourself",
+      "dot": "lime",
+      "needs": [
+        "Name and role",
+        "City or region",
+        "Research themes",
+        "Methods and data",
+        "Collaboration goals"
+      ],
+      "summary": "Say who you are, what you work on, and who you would like to meet."
+    },
+    {
+      "slug": "find-collaborators",
+      "label": "Find collaborators",
+      "short": "Collaborate",
+      "action": "Find collaborators",
+      "dot": "orange",
+      "needs": [
+        "Research question",
+        "Project stage",
+        "Geography",
+        "Data and methods",
+        "Expertise needed",
+        "Time and credit"
+      ],
+      "summary": "Turn a research question into a team with the right methods and local knowledge."
+    },
+    {
+      "slug": "project-showcase",
+      "label": "Project showcase",
+      "short": "Projects",
+      "action": "Share a project",
+      "dot": "",
+      "needs": [
+        "Project title",
+        "Question and context",
+        "Status",
+        "Team",
+        "Data and methods",
+        "Outputs"
+      ],
+      "summary": "Make a project visible at any stage, and say how others can contribute."
+    },
+    {
+      "slug": "datasets-data-requests",
+      "label": "Datasets & data requests",
+      "short": "Data",
+      "action": "Share or request data",
+      "dot": "blue",
+      "needs": [
+        "Share or request",
+        "Coverage",
+        "Licence and access",
+        "Provenance",
+        "Intended use"
+      ],
+      "summary": "Share a documented dataset, or describe the data you need."
+    },
+    {
+      "slug": "tools-code-methods",
+      "label": "Tools, code & methods",
+      "short": "Tools",
+      "action": "Share a tool or method",
+      "dot": "violet",
+      "needs": [
+        "Resource type",
+        "Name and URL",
+        "Problem and users",
+        "Inputs and outputs",
+        "Licence",
+        "Validation"
+      ],
+      "summary": "Share software, code, or a method with what it needs to be reused."
+    },
+    {
+      "slug": "opportunities",
+      "label": "Opportunities",
+      "short": "Opportunities",
+      "action": "Post an opportunity",
+      "dot": "orange",
+      "needs": [
+        "Type",
+        "Title and organisation",
+        "Deadline date",
+        "Eligibility",
+        "Official URL"
+      ],
+      "summary": "List a verified call, grant, position, or challenge with its deadline."
+    },
+    {
+      "slug": "events-meetups",
+      "label": "Events & meetups",
+      "short": "Events",
+      "action": "Post an event",
+      "dot": "lime",
+      "needs": [
+        "Title and organiser",
+        "Event date",
+        "Time and format",
+        "Registration URL",
+        "Audience"
+      ],
+      "summary": "Announce a talk, reading group, clinic, or meetup with its date."
+    },
+    {
+      "slug": "q-a",
+      "label": "Questions",
+      "short": "Questions",
+      "action": "Ask a question",
+      "dot": "blue",
+      "needs": [
+        "Question",
+        "Context and what you tried",
+        "Geography",
+        "Themes"
+      ],
+      "summary": "Ask about data, methods, or tools, and mark the answer that solves it."
+    },
+    {
+      "slug": "announcements",
+      "label": "Announcements",
+      "short": "Announcements",
+      "action": null,
+      "dot": ""
+    }
+  ]
+}

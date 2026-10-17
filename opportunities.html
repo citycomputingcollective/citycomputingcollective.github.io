@@ -28,6 +28,7 @@
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       <nav id="site-nav" aria-label="Primary">
         <a href="community.html">Community</a>
+        <a href="people.html">People</a>
         <a href="projects.html">Projects</a>
         <a href="resources.html">Resources</a>
         <a href="opportunities.html" aria-current="page">Opportunities</a>
@@ -44,8 +45,8 @@
         <h1>Make the next step easier to find.</h1>
         <p class="lead">Discover verified calls, grants, study and work opportunities, challenges, workshops, and community events.</p>
         <div class="buttons">
-          <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=opportunities">Post an opportunity</a>
-          <a class="button light" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=events-meetups">Post an event</a>
+          <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=opportunities" data-compose="opportunities">Post an opportunity</a>
+          <a class="button light" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=events-meetups" data-compose="events-meetups">Post an event</a>
         </div>
       </div>
       <aside class="hero-note"><strong>Current information only</strong><p>Every listing should include an official source, deadline and time zone, eligibility, location, funding or compensation, and current status.</p></aside>
@@ -53,16 +54,29 @@
 
     <section id="board">
       <div class="section-head">
-        <div><div class="eyebrow">Board</div><h2>Open listings and upcoming events.</h2></div>
+        <div><div class="eyebrow">Board</div><h2>Open calls and positions.</h2></div>
         <a class="more" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/categories/opportunities">All listings &rarr;</a>
       </div>
-      <div class="feed" data-feed data-categories="opportunities,events-meetups" data-limit="8">
+      <div data-view="list" data-categories="opportunities" data-facet="kind" data-split="deadline" data-controls="search,theme,facet" data-sync="url" data-page="100" data-label="listings" data-label-one="listing" data-theme-header>
         <div class="empty">
-          <div><strong>No listings yet.</strong><p>Opportunities and events posted to the community appear here with their deadline, eligibility, and official source.</p></div>
-          <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=opportunities">Post the first listing</a>
+          <div><strong>No listings yet.</strong><p>Opportunities posted to the community appear here, sorted by deadline, with closed calls set aside.</p></div>
+          <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=opportunities" data-compose="opportunities">Post an opportunity</a>
         </div>
-        <p class="feed-note"><i aria-hidden="true"></i>Synced from the Opportunities and Events categories on GitHub Discussions.</p>
       </div>
+    </section>
+
+    <section id="events">
+      <div class="section-head">
+        <div><div class="eyebrow">Events</div><h2>Talks, clinics, and meetups.</h2></div>
+        <a class="more" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/categories/events-meetups">All events &rarr;</a>
+      </div>
+      <div data-view="list" data-categories="events-meetups" data-card="event" data-facet="format" data-facet-order="Online,In person,Hybrid" data-split="date" data-controls="facet" data-page="100" data-label="events" data-label-one="event">
+        <div class="empty">
+          <div><strong>No events yet.</strong><p>Events posted to the community appear here by date, with past events kept for the record.</p></div>
+          <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=events-meetups" data-compose="events-meetups">Post an event</a>
+        </div>
+      </div>
+      <p class="feed-note"><i aria-hidden="true"></i>Mirrored from the Opportunities and Events categories on GitHub Discussions.</p>
     </section>
 
     <section id="kinds">

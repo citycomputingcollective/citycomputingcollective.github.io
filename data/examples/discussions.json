@@ -1,0 +1,363 @@
+{
+ "$comment": "Example data. Shown only with ?src=example to preview the community views; not real posts.",
+ "generated": "2026-10-16T15:30:00Z",
+ "discussions": [
+  {
+   "number": 16,
+   "title": "Welcome to the example community",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "announcements",
+   "categoryName": "Announcements",
+   "author": "example-maintainer",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-16T09:00:00Z",
+   "updatedAt": "2026-10-16T15:30:00Z",
+   "comments": 4,
+   "upvotes": 5,
+   "excerpt": "This page is showing example data so the layout can be reviewed before real posts exist."
+  },
+  {
+   "number": 15,
+   "title": "Measuring street-level heat exposure with low-cost sensors",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "find-collaborators",
+   "categoryName": "Find Collaborators",
+   "author": "example-member-1",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-12T09:00:00Z",
+   "updatedAt": "2026-10-16T15:30:00Z",
+   "comments": 6,
+   "upvotes": 7,
+   "excerpt": "How much does street-level air temperature differ from satellite land-surface temperature across neighbourhoods, and who is most exposed?",
+   "themes": [
+    "Climate, Energy & Resilience",
+    "Urban Sensing & Spatial Data",
+    "Health, Equity & Accessibility"
+   ],
+   "fields": {
+    "stage": "Team forming",
+    "geography": "Two mid-sized US cities"
+   }
+  },
+  {
+   "number": 14,
+   "title": "How do you validate perception scores from street-view images?",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "q-a",
+   "categoryName": "Q&A",
+   "author": "example-member-2",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-14T09:00:00Z",
+   "updatedAt": "2026-10-15T15:30:00Z",
+   "comments": 3,
+   "upvotes": 4,
+   "excerpt": "I have model-predicted safety scores for street segments and a small resident survey. What is a defensible way to compare them?",
+   "themes": [
+    "Urban Sensing & Spatial Data",
+    "Urban AI & Simulation"
+   ],
+   "fields": {
+    "geography": "Any"
+   },
+   "answered": true
+  },
+  {
+   "number": 13,
+   "title": "Workshop on urban sensing and open data: call for papers",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "opportunities",
+   "categoryName": "Opportunities",
+   "author": "example-member-3",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-10T09:00:00Z",
+   "updatedAt": "2026-10-14T15:30:00Z",
+   "comments": 1,
+   "upvotes": 2,
+   "excerpt": "Short papers on sensing infrastructure, data quality, and reuse of urban observations.",
+   "themes": [
+    "Urban Sensing & Spatial Data"
+   ],
+   "fields": {
+    "kind": "Call for papers",
+    "deadline": "2026-10-28",
+    "official": "https://example.org"
+   }
+  },
+  {
+   "number": 12,
+   "title": "Methods clinic: causal designs for urban interventions",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "events-meetups",
+   "categoryName": "Events & Meetups",
+   "author": "example-member-4",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-09T09:00:00Z",
+   "updatedAt": "2026-10-13T15:30:00Z",
+   "comments": 2,
+   "upvotes": 3,
+   "excerpt": "A one-hour online clinic. Bring a design question; two people present short cases.",
+   "themes": [
+    "Governance & Participation",
+    "Urban AI & Simulation"
+   ],
+   "fields": {
+    "date": "2026-11-05",
+    "format": "Online",
+    "registration": "https://example.org"
+   }
+  },
+  {
+   "number": 11,
+   "title": "Open accessibility indicators for school catchments",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "project-showcase",
+   "categoryName": "Project Showcase",
+   "author": "example-member-5",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-09-30T09:00:00Z",
+   "updatedAt": "2026-10-12T15:30:00Z",
+   "comments": 5,
+   "upvotes": 6,
+   "excerpt": "Walking and transit travel times from every block to its assigned school, released with code and validation against observed trips.",
+   "themes": [
+    "Mobility & Transportation",
+    "Health, Equity & Accessibility"
+   ],
+   "fields": {
+    "status": "Active"
+   }
+  },
+  {
+   "number": 10,
+   "title": "Request: parcel-level land use change, 2010–2024",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "datasets-data-requests",
+   "categoryName": "Datasets & Data Requests",
+   "author": "example-member-1",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-08T09:00:00Z",
+   "updatedAt": "2026-10-11T15:30:00Z",
+   "comments": 4,
+   "upvotes": 5,
+   "excerpt": "Looking for parcel-level land use with consistent categories across years to study conversion near new transit stations.",
+   "themes": [
+    "Built Environment & Land Use",
+    "Housing & Urban Economics"
+   ],
+   "fields": {
+    "kind": "Request data"
+   }
+  },
+  {
+   "number": 9,
+   "title": "Example member, transport planner",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "introductions",
+   "categoryName": "Introductions",
+   "author": "example-member-6",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-10T09:00:00Z",
+   "updatedAt": "2026-10-10T15:30:00Z",
+   "comments": 2,
+   "upvotes": 3,
+   "excerpt": "I would like to meet people working on curb space data and delivery logistics, and can offer field survey experience.",
+   "themes": [
+    "Mobility & Transportation",
+    "Governance & Participation"
+   ],
+   "fields": {
+    "role": "Transport planner at a city agency",
+    "location": "Western Europe"
+   },
+   "directory": true
+  },
+  {
+   "number": 8,
+   "title": "A reproducible pipeline for building footprint change detection",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "tools-code-methods",
+   "categoryName": "Tools, Code & Methods",
+   "author": "example-member-7",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-02T09:00:00Z",
+   "updatedAt": "2026-10-09T15:30:00Z",
+   "comments": 3,
+   "upvotes": 4,
+   "excerpt": "Detects new and demolished buildings between two imagery dates and exports change polygons with confidence scores.",
+   "themes": [
+    "Urban Sensing & Spatial Data",
+    "Built Environment & Land Use"
+   ],
+   "fields": {
+    "kind": "Code repository"
+   }
+  },
+  {
+   "number": 7,
+   "title": "Example member, PhD student in planning",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "introductions",
+   "categoryName": "Introductions",
+   "author": "example-member-1",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-08T09:00:00Z",
+   "updatedAt": "2026-10-08T15:30:00Z",
+   "comments": 3,
+   "upvotes": 4,
+   "excerpt": "Looking for collaborators on heat exposure and street-level sensing; happy to share remote sensing workflows.",
+   "themes": [
+    "Climate, Energy & Resilience",
+    "Urban Sensing & Spatial Data"
+   ],
+   "fields": {
+    "role": "PhD student in city planning",
+    "location": "North Carolina, US"
+   },
+   "directory": true
+  },
+  {
+   "number": 6,
+   "title": "Postdoctoral position in urban data science",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "opportunities",
+   "categoryName": "Opportunities",
+   "author": "example-member-8",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-01T09:00:00Z",
+   "updatedAt": "2026-10-07T15:30:00Z",
+   "comments": 0,
+   "upvotes": 1,
+   "excerpt": "Two-year position on mobility data and equity, with a focus on open methods.",
+   "themes": [
+    "Mobility & Transportation",
+    "Health, Equity & Accessibility"
+   ],
+   "fields": {
+    "kind": "Postdoc",
+    "deadline": "2026-12-15",
+    "official": "https://example.org"
+   }
+  },
+  {
+   "number": 5,
+   "title": "Example member, GIS analyst",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "introductions",
+   "categoryName": "Introductions",
+   "author": "example-member-9",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-05T09:00:00Z",
+   "updatedAt": "2026-10-05T15:30:00Z",
+   "comments": 1,
+   "upvotes": 2,
+   "excerpt": "I build spatial data pipelines for a regional council and want to learn more about simulation.",
+   "themes": [
+    "Urban Sensing & Spatial Data",
+    "Urban AI & Simulation"
+   ],
+   "fields": {
+    "role": "GIS analyst",
+    "location": "New Zealand"
+   },
+   "directory": true
+  },
+  {
+   "number": 4,
+   "title": "Simulating rent burden under zoning reform scenarios",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "project-showcase",
+   "categoryName": "Project Showcase",
+   "author": "example-member-10",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-09-20T09:00:00Z",
+   "updatedAt": "2026-10-04T15:30:00Z",
+   "comments": 2,
+   "upvotes": 3,
+   "excerpt": "An agent-based model of household moves under three upzoning scenarios, seeking feedback on calibration.",
+   "themes": [
+    "Housing & Urban Economics",
+    "Urban AI & Simulation",
+    "Governance & Participation"
+   ],
+   "fields": {
+    "status": "Seeking feedback"
+   }
+  },
+  {
+   "number": 3,
+   "title": "Reading group: foundation models for cities",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "events-meetups",
+   "categoryName": "Events & Meetups",
+   "author": "example-member-2",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-09-25T09:00:00Z",
+   "updatedAt": "2026-10-03T15:30:00Z",
+   "comments": 5,
+   "upvotes": 6,
+   "excerpt": "Monthly reading group. September covered evaluation of urban foundation models.",
+   "themes": [
+    "Urban AI & Simulation"
+   ],
+   "fields": {
+    "date": "2026-09-30",
+    "format": "Online",
+    "registration": "https://example.org"
+   }
+  },
+  {
+   "number": 2,
+   "title": "Urban resilience challenge: open data track",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "opportunities",
+   "categoryName": "Opportunities",
+   "author": "example-member-3",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-09-01T09:00:00Z",
+   "updatedAt": "2026-10-02T15:30:00Z",
+   "comments": 2,
+   "upvotes": 3,
+   "excerpt": "Teams build tools on open flood and heat data; the open data track has closed.",
+   "themes": [
+    "Climate, Energy & Resilience"
+   ],
+   "fields": {
+    "kind": "Challenge or hackathon",
+    "deadline": "2026-10-01",
+    "official": "https://example.org"
+   }
+  },
+  {
+   "number": 1,
+   "title": "Example member, community organiser",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "introductions",
+   "categoryName": "Introductions",
+   "author": "example-member-11",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-09-28T09:00:00Z",
+   "updatedAt": "2026-09-28T15:30:00Z",
+   "comments": 4,
+   "upvotes": 5,
+   "excerpt": "",
+   "themes": [],
+   "fields": {}
+  }
+ ]
+}

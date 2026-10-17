@@ -3,7 +3,7 @@ labels: []
 body:
   - type: markdown
     attributes:
-      value: "Welcome to the City Computing Collective. Share only information you are comfortable making public."
+      value: "Welcome to the City Computing Collective. Share only information you are comfortable making public. If you tick the directory box at the end, your name and role, location, themes, and collaboration goals also appear in the People directory on citycomputingcollective.com. Edit or delete this post at any time to change or remove that entry."
   - type: input
     id: role
     attributes:
@@ -44,6 +44,23 @@ body:
     attributes:
       label: Optional public links
       placeholder: GitHub, ORCID, Scholar, website, project, or publication
+  - type: dropdown
+    id: themes
+    attributes:
+      label: Research themes
+      description: "The urban systems you work on. They place your introduction under these themes on citycomputingcollective.com."
+      multiple: true
+      options:
+        - "Mobility & Transportation"
+        - "Built Environment & Land Use"
+        - "Housing & Urban Economics"
+        - "Climate, Energy & Resilience"
+        - "Health, Equity & Accessibility"
+        - "Urban Sensing & Spatial Data"
+        - "Governance & Participation"
+        - "Urban AI & Simulation"
+    validations:
+      required: true
   - type: checkboxes
     id: conduct
     attributes:
@@ -51,3 +68,11 @@ body:
       options:
         - label: I will follow the Code of Conduct and will not share private or restricted information.
           required: true
+  - type: checkboxes
+    id: directory
+    attributes:
+      label: People directory
+      description: Optional. Leave unticked to keep your introduction out of the directory.
+      options:
+        - label: List my introduction in the People directory on citycomputingcollective.com.
+          required: false

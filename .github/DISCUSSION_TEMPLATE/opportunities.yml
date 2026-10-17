@@ -27,7 +27,16 @@ body:
   - type: input
     id: deadline
     attributes:
-      label: Deadline and time zone
+      label: Deadline date
+      description: The official deadline as YYYY-MM-DD. The website uses it to sort listings and mark them closed.
+      placeholder: "2026-12-01"
+    validations:
+      required: true
+  - type: input
+    id: deadline_time
+    attributes:
+      label: Deadline time and time zone
+      placeholder: "23:59 AoE"
     validations:
       required: true
   - type: textarea
@@ -46,6 +55,23 @@ body:
     id: relevance
     attributes:
       label: Relevance to city computing
+    validations:
+      required: true
+  - type: dropdown
+    id: themes
+    attributes:
+      label: Research themes
+      description: "Choose the themes this opportunity is relevant to."
+      multiple: true
+      options:
+        - "Mobility & Transportation"
+        - "Built Environment & Land Use"
+        - "Housing & Urban Economics"
+        - "Climate, Energy & Resilience"
+        - "Health, Equity & Accessibility"
+        - "Urban Sensing & Spatial Data"
+        - "Governance & Participation"
+        - "Urban AI & Simulation"
     validations:
       required: true
   - type: checkboxes
