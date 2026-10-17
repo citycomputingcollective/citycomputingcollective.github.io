@@ -9,6 +9,8 @@ Official website and community hub for the City Computing Collective. Static sit
 | `index.html` | Hero, how it works, live activity counts, definition, pathways, latest activity, research themes, join |
 | `community.html` | The explorer: search, kind of post, research theme, sort; theme view; start a post |
 | `people.html` | Opt-in People directory built from introductions |
+| `theme.html?t=<slug>` | Theme hub: collaborations, questions, projects, resources, calls, events, and people for one research theme, with its RSS feed |
+| `member.html?u=<login>` | Member page: a person's directory entry (if listed), themes, and every public post |
 | `projects.html` | Projects from the Project Showcase category, filterable by status |
 | `resources.html` | Datasets, data requests, tools and methods; connected platforms; sharing standard |
 | `opportunities.html` | Open calls sorted by deadline (closed ones set aside) and events by date (past ones set aside) |
@@ -16,13 +18,14 @@ Official website and community hub for the City Computing Collective. Static sit
 | `join.html` | Onboarding steps, introduction guide, privacy |
 | `404.html` | Not-found page |
 
-Shared assets: `community.css`, `assets/site.js`, `assets/og.png`. No build step and no external dependencies.
+Shared assets: `community.css`, `assets/site.js` (data, views, composer, saved items), `assets/palette.js` (command palette), `assets/og.png`. No build step and no external dependencies.
 
 ## How the data flows
 
 ```
 GitHub Discussions ──► .github/workflows/discussions-feed.yml (on change + every 6 h)
                          └─► .github/scripts/export_discussions.py ──► data/discussions.json ──► assets/site.js
+                         └─► feeds/all.xml, feeds/theme-<slug>.xml (RSS), feeds/events.ics (calendar)
 data/taxonomy.json  ──► categories and research themes, shared by the exporter, the templates and the site
 ```
 
@@ -51,16 +54,25 @@ Views are declared in HTML and filled by `assets/site.js`. Each keeps its own em
 | `data-facet` | `category`, or a form field such as `status`, `kind`, `format`; shown as filter chips with counts |
 | `data-facet-order` | Order for facet values |
 | `data-split` | `deadline` or `date`: split into open/upcoming and closed/past |
-| `data-card` | `post` (default), `event`, or `person` |
+| `data-card` | `post` (default), `event` (with calendar buttons), `person`, or `compact` |
 | `data-filter="directory"` | Only introductions whose author opted in |
 | `data-sync="url"` | Keep search, theme, facet and sort in the URL, so filtered views can be shared |
-| `data-page`, `data-more-href` | Page size; link to a full page instead of "Show more" |
+| `data-page`, `data-more-href` | Page size; link to a full page instead of "Show more" (`{t}` and `{u}` are replaced by the theme and member) |
+| `data-sort` | Default order: `trending` (engagement over age), `activity`, `new`, or `replies` |
+| `data-theme-from`, `data-author-from` | Fix the list to the theme or member named in that URL parameter |
+| `data-filter="unanswered"` | Only questions without a marked answer |
+| `data-hide-empty` | Hide the nearest `[data-hide-target]` when the list is empty |
+| `data-saved-toggle` | Show a "Saved" filter for posts bookmarked in this browser |
 | `data-label`, `data-label-one` | Nouns for the result count |
 | `data-theme-header`, `data-github-search`, `data-offer-compose` | Theme banner, "Search on GitHub" link, "Start a post" in the no-match state |
 
 `data-view="stats"` shows activity counts when there is at least one discussion. `[data-theme-count="<slug>"]` shows a theme's post count. Any element with `data-compose` (optionally `data-compose="<category>"`) opens the post composer, which explains what each form asks for before continuing to GitHub.
 
-Keyboard: `/` focuses search, `Esc` clears it or closes the composer, arrow keys move between post types.
+`data-view="theme-hub"` and `data-view="member"` fill the headers of `theme.html` and `member.html`.
+
+Keyboard: `Ctrl K` or `⌘K` opens the command palette (posts, people, themes, pages, actions) anywhere; `/` focuses the page's search; `Esc` clears search or closes a dialog; arrow keys move through the palette and the post types.
+
+Saved posts are kept in the browser's local storage only; nothing is sent anywhere.
 
 ### Previewing with example data
 

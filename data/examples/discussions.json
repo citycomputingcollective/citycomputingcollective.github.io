@@ -42,6 +42,28 @@
    }
   },
   {
+   "number": 17,
+   "title": "Which CRS should I use for a multi-city street network comparison?",
+   "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
+   "category": "q-a",
+   "categoryName": "Q&A",
+   "author": "example-member-9",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-16T08:00:00Z",
+   "updatedAt": "2026-10-16T08:00:00Z",
+   "comments": 0,
+   "upvotes": 2,
+   "excerpt": "Comparing intersection density across six cities on three continents. A single equal-area projection, or local UTM zones per city?",
+   "themes": [
+    "Urban Sensing & Spatial Data",
+    "Built Environment & Land Use"
+   ],
+   "fields": {
+    "geography": "Six cities"
+   }
+  },
+  {
    "number": 14,
    "title": "How do you validate perception scores from street-view images?",
    "url": "https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions",
@@ -108,7 +130,8 @@
    "fields": {
     "date": "2026-11-05",
     "format": "Online",
-    "registration": "https://example.org"
+    "registration": "https://example.org",
+    "datetime": "15:00–16:00 UTC"
    }
   },
   {
@@ -316,7 +339,8 @@
    "fields": {
     "date": "2026-09-30",
     "format": "Online",
-    "registration": "https://example.org"
+    "registration": "https://example.org",
+    "datetime": "17:00 UTC"
    }
   },
   {
