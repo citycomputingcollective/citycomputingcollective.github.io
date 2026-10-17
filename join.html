@@ -12,7 +12,11 @@
   <meta property="og:title" content="Join — City Computing Collective">
   <meta property="og:description" content="Join with a free GitHub account, introduce your work, and start contributing to open urban research.">
   <meta property="og:url" content="https://citycomputingcollective.com/join.html">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://citycomputingcollective.com/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="City Computing Collective: an open community for computational urban research.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a2e'/%3E%3Cpath d='M12 52L52 12' stroke='%232aa8b4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='7' fill='%23f36f45'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23f36f45'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="community.css">
 </head>
@@ -24,6 +28,7 @@
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       <nav id="site-nav" aria-label="Primary">
         <a href="community.html">Community</a>
+        <a href="people.html">People</a>
         <a href="projects.html">Projects</a>
         <a href="resources.html">Resources</a>
         <a href="opportunities.html">Opportunities</a>
@@ -62,10 +67,11 @@
         <div class="row"><strong>Research</strong><span>Urban questions, systems, methods, and data you work with, or want to learn.</span></div>
         <div class="row"><strong>Collaboration</strong><span>What you can contribute and what kinds of people, projects, or expertise you are seeking.</span></div>
         <div class="row"><strong>Public links</strong><span>GitHub, ORCID, Scholar, personal website, project, or publication links are optional.</span></div>
+        <div class="row"><strong>People directory</strong><span>Optional. Tick the last box of the form to appear in the <a href="people.html">People directory</a>. Edit or delete your post to change or remove the entry.</span></div>
       </div>
       <div class="buttons">
         <a class="button light" href="https://github.com/signup">Create a GitHub account</a>
-        <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=introductions">Post your introduction</a>
+        <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=introductions" data-compose="introductions">Post your introduction</a>
         <a class="button signal" href="community.html">Explore first</a>
       </div>
     </section>
@@ -83,8 +89,17 @@
   </main>
 
   <footer>
-    <span>&copy; 2026 City Computing Collective &middot; Founded by <a href="https://yuxuancai.com">Yuxuan Cai</a></span>
-    <div class="footer-links"><a href="community.html">Community</a><a href="about.html">Governance</a><a href="https://github.com/citycomputingcollective">GitHub</a></div>
+    <p class="network-title" id="network-title">Open urban research network</p>
+    <ul class="network" aria-labelledby="network-title">
+        <li><a href="https://urbanscience.ai"><strong>Urban Science AI Lab</strong><span>Research agenda</span></a></li>
+        <li><a href="https://urbanprobe.com"><strong>UrbanProbe</strong><span>Data, indicators &amp; methods</span></a></li>
+        <li><a href="https://xurbanai.com"><strong>XUrbanAI</strong><span>Models, agents &amp; benchmarks</span></a></li>
+        <li><div class="here"><strong>City Computing Collective</strong><span>Community &amp; collaboration</span><small>This site</small></div></li>
+    </ul>
+    <div class="footer-base">
+      <span>&copy; 2026 City Computing Collective &middot; Founded by <a href="https://yuxuancai.com">Yuxuan Cai</a></span>
+      <div class="footer-links"><a href="about.html#governance">Governance</a><a href="join.html">Join</a><a href="https://github.com/citycomputingcollective">GitHub</a></div>
+    </div>
   </footer>
   <script src="assets/site.js"></script>
 </body>

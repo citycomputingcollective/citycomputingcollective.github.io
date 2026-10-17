@@ -1,6 +1,6 @@
 name: Refresh discussions feed
 
-# Exports GitHub Discussions to data/discussions.json so the static site can show a live feed.
+# Exports GitHub Discussions to data/discussions.json so the static site can list, filter, and sort them.
 # Runs on a schedule, on demand, and whenever a discussion or comment changes.
 on:
   schedule:
@@ -25,10 +25,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - name: Export discussions
         env:
           GH_TOKEN: ${{ github.token }}
-        run: bash .github/scripts/refresh-discussions.sh "${{ github.repository_owner }}" "${{ github.event.repository.name }}" data/discussions.json
+        run: |
+          pip install --quiet pyyaml
+          python .github/scripts/export_discussions.py
 
       - name: Commit if changed
         run: |

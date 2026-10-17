@@ -12,7 +12,11 @@
   <meta property="og:title" content="Projects — City Computing Collective">
   <meta property="og:description" content="Discover open urban research projects, follow their progress, join a team, or bring an existing study to the community.">
   <meta property="og:url" content="https://citycomputingcollective.com/projects.html">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://citycomputingcollective.com/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="City Computing Collective: an open community for computational urban research.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a2e'/%3E%3Cpath d='M12 52L52 12' stroke='%232aa8b4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='7' fill='%23f36f45'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23f36f45'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="community.css">
 </head>
@@ -24,6 +28,7 @@
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       <nav id="site-nav" aria-label="Primary">
         <a href="community.html">Community</a>
+        <a href="people.html">People</a>
         <a href="projects.html" aria-current="page">Projects</a>
         <a href="resources.html">Resources</a>
         <a href="opportunities.html">Opportunities</a>
@@ -52,7 +57,7 @@
         <div><div class="eyebrow">Registry</div><h2>Projects on the registry.</h2></div>
         <a class="more" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/categories/project-showcase">All projects &rarr;</a>
       </div>
-      <div class="feed" data-feed data-categories="project-showcase" data-limit="8">
+      <div data-view="list" data-categories="project-showcase" data-facet="status" data-facet-order="Idea,Team forming,Active,Seeking feedback,Released,Completed" data-controls="search,theme,facet" data-sync="url" data-page="10" data-label="projects" data-label-one="project" data-theme-header data-offer-compose>
         <div class="empty">
           <div><strong>No projects registered yet.</strong><p>A project post states its stage, geography, question, methods, team needs, and next milestone. The template asks for each.</p></div>
           <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=project-showcase">Register a project</a>
@@ -84,8 +89,17 @@
   </main>
 
   <footer>
-    <span>&copy; 2026 City Computing Collective &middot; Founded by <a href="https://yuxuancai.com">Yuxuan Cai</a></span>
-    <div class="footer-links"><a href="community.html">Community</a><a href="resources.html">Resources</a><a href="about.html">Governance</a></div>
+    <p class="network-title" id="network-title">Open urban research network</p>
+    <ul class="network" aria-labelledby="network-title">
+        <li><a href="https://urbanscience.ai"><strong>Urban Science AI Lab</strong><span>Research agenda</span></a></li>
+        <li><a href="https://urbanprobe.com"><strong>UrbanProbe</strong><span>Data, indicators &amp; methods</span></a></li>
+        <li><a href="https://xurbanai.com"><strong>XUrbanAI</strong><span>Models, agents &amp; benchmarks</span></a></li>
+        <li><div class="here"><strong>City Computing Collective</strong><span>Community &amp; collaboration</span><small>This site</small></div></li>
+    </ul>
+    <div class="footer-base">
+      <span>&copy; 2026 City Computing Collective &middot; Founded by <a href="https://yuxuancai.com">Yuxuan Cai</a></span>
+      <div class="footer-links"><a href="about.html#governance">Governance</a><a href="join.html">Join</a><a href="https://github.com/citycomputingcollective">GitHub</a></div>
+    </div>
   </footer>
   <script src="assets/site.js"></script>
 </body>
