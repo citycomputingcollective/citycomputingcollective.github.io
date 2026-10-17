@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Introduce yourself, find collaborators, or share a project
+    url: https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new/choose
+    about: Community posts belong in Discussions. Issues here are for problems with the website itself.
+  - name: Code of Conduct and governance
+    url: https://citycomputingcollective.com/about.html#governance
+    about: How the community is moderated and how decisions are made.

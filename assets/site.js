@@ -54,6 +54,13 @@
 
   function apply(data) {
     var all = (data && data.discussions) || [];
+    if (data && data.generated) {
+      document.querySelectorAll('.feed-note').forEach(function (n) {
+        var t = document.createElement('span');
+        t.textContent = ' Updated ' + rel(data.generated) + '.';
+        n.appendChild(t);
+      });
+    }
     mounts.forEach(function (m) {
       var cats = (m.getAttribute('data-categories') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
       var limit = parseInt(m.getAttribute('data-limit') || '6', 10);
