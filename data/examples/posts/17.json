@@ -1,0 +1,6 @@
+{
+ "number": 17,
+ "bodyHTML": "<h3 dir=\"auto\">Your question in one sentence</h3>\n<p dir=\"auto\">Which CRS should I use for a multi-city street network comparison?</p>\n<h3 dir=\"auto\">Context and what you tried</h3>\n<p dir=\"auto\">Comparing intersection density across six cities on three continents. A single equal-area projection, or local UTM zones per city?</p>\n",
+ "comments": [],
+ "moreComments": 0
+}

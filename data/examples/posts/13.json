@@ -1,0 +1,18 @@
+{
+ "number": 13,
+ "bodyHTML": "<h3 dir=\"auto\">Opportunity type</h3>\n<p dir=\"auto\">Call for papers</p>\n<h3 dir=\"auto\">Official title and organization</h3>\n<p dir=\"auto\">Workshop on urban sensing and open data</p>\n<h3 dir=\"auto\">Deadline date</h3>\n<p dir=\"auto\">2026-10-28</p>\n<h3 dir=\"auto\">Deadline time and time zone</h3>\n<p dir=\"auto\">23:59 AoE</p>\n<h3 dir=\"auto\">Eligibility, location, and funding or compensation</h3>\n<p dir=\"auto\">Open to all; online; no fee.</p>\n<h3 dir=\"auto\">Official URL</h3>\n<p dir=\"auto\"><a href=\"https://example.org\">https://example.org</a></p>\n<h3 dir=\"auto\">Relevance to city computing</h3>\n<p dir=\"auto\">Short papers on sensing infrastructure, data quality, and reuse of urban observations.</p>\n",
+ "comments": [
+  {
+   "author": "example-member-3",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-12T08:00:00Z",
+   "upvotes": 2,
+   "isAnswer": false,
+   "bodyHTML": "<p>Organiser here: extended abstracts of two pages are welcome too.</p>",
+   "replies": [],
+   "moreReplies": 0
+  }
+ ],
+ "moreComments": 0
+}

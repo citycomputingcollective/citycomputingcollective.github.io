@@ -1,0 +1,18 @@
+{
+ "number": 16,
+ "bodyHTML": "<p>This page is showing example data so the layout can be reviewed before real posts exist.</p><p>Every post here mirrors a discussion on GitHub. Replies happen on GitHub and appear on the site after the next refresh.</p>",
+ "comments": [
+  {
+   "author": "example-member-1",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-16T10:00:00Z",
+   "upvotes": 1,
+   "isAnswer": false,
+   "bodyHTML": "<p>Looks good.</p>",
+   "replies": [],
+   "moreReplies": 0
+  }
+ ],
+ "moreComments": 0
+}

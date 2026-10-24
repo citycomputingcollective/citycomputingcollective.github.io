@@ -142,6 +142,8 @@
       const kind = v.dataset.view;
       if (kind === 'theme-hub') themeHub(v, ctx);
       if (kind === 'member') memberHead(v, ctx);
+      if (kind === 'post') postView(v, ctx);
+      if (kind === 'network') networkReleases(v);
     });
     views.forEach((v) => {
       if (v.dataset.view === 'list') listView(v, ctx);
@@ -183,13 +185,14 @@
   }
 
   const memberHref = (login) => link('member.html?u=' + encodeURIComponent(login));
+  const postHref = (d) => link('post.html?n=' + d.number);
 
   function postCard(d, ctx, i) {
     const cat = ctx.cats[d.category] || {};
     const label = ctx.single && d.fields?.kind ? d.fields.kind : (cat.label || d.categoryName || d.category);
     return `<article class="post-card v2" style="--i:${i}">
       <div class="post-top"><span class="post-type"><span class="dot ${esc(cat.dot || '')}"></span>${esc(label)}</span><span class="top-right">${badge(d, ctx.single)}${saveBtn(d)}</span></div>
-      <h3><a class="card-link" href="${esc(d.url)}">${esc(d.title)}</a></h3>
+      <h3><a class="card-link" href="${esc(postHref(d))}">${esc(d.title)}</a></h3>
       ${d.excerpt ? `<p class="excerpt">${esc(d.excerpt)}</p>` : ''}
       ${themeChips(d, ctx)}
       <div class="post-foot">${avatar(d, 22)}<a class="who" href="${esc(memberHref(d.author))}">${esc(d.author)}</a><span aria-hidden="true">·</span><span>${plural(d.comments || 0, 'reply', 'replies')}</span>${d.upvotes ? `<span aria-hidden="true">·</span><span title="Upvotes">↑ ${d.upvotes}</span>` : ''}<span aria-hidden="true">·</span><span>${esc(ago(d.updatedAt))}</span><span class="post-arrow" aria-hidden="true">↗</span></div>
@@ -218,7 +221,7 @@
       ${tile}
       <div class="event-body">
         <div class="post-top"><span class="post-type">${esc(when)}</span><span class="top-right">${badge(d)}${saveBtn(d)}</span></div>
-        <h3><a class="card-link" href="${esc(d.url)}">${esc(d.title)}</a></h3>
+        <h3><a class="card-link" href="${esc(postHref(d))}">${esc(d.title)}</a></h3>
         ${d.excerpt ? `<p class="excerpt">${esc(d.excerpt)}</p>` : ''}
         ${themeChips(d, ctx)}
         ${calendarLinks(d)}
@@ -232,13 +235,13 @@
       <div class="person-head">${avatar(d, 48)}<div><h3><a class="card-link" href="${esc(memberHref(d.author))}">${esc(f.role || d.title)}</a></h3>${f.location ? `<p class="where">${esc(f.location)}</p>` : ''}</div></div>
       ${d.excerpt ? `<p class="excerpt">${esc(d.excerpt)}</p>` : ''}
       ${themeChips(d, ctx, 4)}
-      <a class="person-link" href="${esc(d.url)}">Read the introduction <span aria-hidden="true">↗</span></a>
+      <a class="person-link" href="${esc(postHref(d))}">Read the introduction</a>
     </article>`;
   }
 
   function compactCard(d, ctx) {
     const cat = ctx.cats[d.category] || {};
-    return `<li class="compact-item"><a href="${esc(d.url)}">${esc(d.title)}</a><span>${esc(cat.short || d.categoryName || '')} · ${plural(d.comments || 0, 'reply', 'replies')} · ${esc(ago(d.createdAt))}</span></li>`;
+    return `<li class="compact-item"><a href="${esc(postHref(d))}">${esc(d.title)}</a><span>${esc(cat.short || d.categoryName || '')} · ${plural(d.comments || 0, 'reply', 'replies')} · ${esc(ago(d.createdAt))}</span></li>`;
   }
 
   const CARDS = { post: postCard, event: eventCard, person: personCard, compact: compactCard };
@@ -405,6 +408,7 @@
         const n = (d) => daysUntil((d.fields || {})[key]);
         const open = filtered.filter((d) => n(d) === null || n(d) >= 0).sort((a, b) => (n(a) ?? 1e9) - (n(b) ?? 1e9));
         const closed = filtered.filter((d) => n(d) !== null && n(d) < 0).sort((a, b) => n(b) - n(a));
+        if (o.hideEmpty !== undefined && !open.length && !active) { (el.closest('[data-hide-target]') || el).hidden = true; return; }
         const openLabel = key === 'date' ? 'Upcoming' : 'Open';
         const closedLabel = key === 'date' ? 'Past events' : 'Closed';
         html += open.length
@@ -570,8 +574,144 @@
     slot('stats').innerHTML = [[posts.length, 'post', 'posts'], [replies, 'reply received', 'replies received'], [topThemes.length, 'theme', 'themes']]
       .map(([n, a, b]) => `<div><strong>${n}</strong><span>${n === 1 ? a : b}</span></div>`).join('');
     const gh = posts[0].authorUrl || `https://github.com/${encodeURIComponent(login)}`;
-    slot('links').innerHTML = `<a class="button light" href="${esc(gh)}" rel="noopener">GitHub profile ↗</a>${intro ? `<a class="button light" href="${esc(intro.url)}">Introduction ↗</a>` : ''}`;
+    slot('links').innerHTML = `<a class="button light" href="${esc(gh)}" rel="noopener">GitHub profile ↗</a>${intro ? `<a class="button light" href="${esc(postHref(intro))}">Introduction</a>` : ''}`;
     if (!intro) slot('note').hidden = false;
+  }
+
+  // ------------------------------------------------------------------ post page (post.html?n=number), after Discourse topic pages
+  const FORM_NOISE = /^(community agreement|accuracy|data rights|people directory|research themes)$/i;
+  function cleanHTML(html) {
+    const doc = new DOMParser().parseFromString(`<div>${html || ''}</div>`, 'text/html');
+    const root = doc.body.firstElementChild;
+    root.querySelectorAll('script,style,iframe,object,embed,form,input,button,select,textarea,link,meta,base').forEach((n) => n.remove());
+    root.querySelectorAll('*').forEach((el) => {
+      [...el.attributes].forEach((a) => {
+        const n = a.name.toLowerCase(), v = a.value.trim().toLowerCase();
+        if (n.startsWith('on') || n === 'style' || n === 'srcset' || ((n === 'href' || n === 'src' || n === 'xlink:href') && /^(javascript|vbscript|data):/.test(v))) el.removeAttribute(a.name);
+      });
+      if (el.tagName === 'A') el.setAttribute('rel', 'noopener nofollow ugc');
+      if (el.tagName === 'IMG') { el.setAttribute('loading', 'lazy'); el.setAttribute('decoding', 'async'); }
+    });
+    // discussion forms render as <h3>Label</h3> followed by the answer; drop empty answers and form boilerplate
+    root.querySelectorAll('h3').forEach((h) => {
+      const label = h.textContent.trim();
+      const parts = [];
+      let n = h.nextElementSibling;
+      while (n && n.tagName !== 'H3') { parts.push(n); n = n.nextElementSibling; }
+      const answer = parts.map((x) => x.textContent.trim()).join(' ');
+      if (FORM_NOISE.test(label) || /^_?no response_?$/i.test(answer)) { parts.forEach((x) => x.remove()); h.remove(); return; }
+      const field = doc.createElement('div'); field.className = 'form-field';
+      h.replaceWith(field); field.appendChild(h); parts.forEach((x) => field.appendChild(x));
+    });
+    return root.innerHTML;
+  }
+  const textOf = (html, n = 500) => { const d = new DOMParser().parseFromString(html || '', 'text/html'); return (d.body.textContent || '').replace(/\s+/g, ' ').trim().slice(0, n); };
+
+  function postView(el, ctx) {
+    const num = params.get('n');
+    const d = ctx.all.find((x) => String(x.number) === num);
+    const slot = (k) => el.querySelector(`[data-slot="${k}"]`);
+    if (!d) {
+      slot('title').textContent = 'Post not found.';
+      slot('body').innerHTML = `<p class="muted-note">It may have been removed, or the site has not refreshed since it was posted. <a href="${REPO}">Browse the discussions on GitHub</a>.</p>`;
+      slot('side').hidden = true;
+      return;
+    }
+    const cat = ctx.cats[d.category] || {};
+    document.title = `${d.title} — City Computing Collective`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', d.excerpt || d.title);
+    slot('crumbs').innerHTML = `<a href="${esc(link('community.html#browse'))}">Community</a><span aria-hidden="true">›</span><a href="${esc(link('community.html?category=' + d.category + '#browse'))}">${esc(cat.label || d.categoryName)}</a>`;
+    slot('title').textContent = d.title;
+    slot('meta').innerHTML = `${avatar(d, 32)}<div><a class="who" href="${esc(memberHref(d.author))}">${esc(d.author)}</a><span>posted ${esc(ago(d.createdAt))}${d.updatedAt !== d.createdAt ? ` · active ${esc(ago(d.updatedAt))}` : ''}</span></div><span class="top-right">${badge(d, true)}</span>`;
+    slot('themes').innerHTML = themeChips(d, ctx, 8).replace(/^<div class="meta-row">|<\/div>$/g, '');
+    const cal = d.category === 'events-meetups' ? calendarLinks(d) : '';
+    slot('actions').innerHTML = `<a class="button primary" href="${esc(d.url)}">Reply on GitHub ↗</a>${saveBtn(d).replace('class="save-btn"', 'class="save-btn labelled"').replace('</svg>', '</svg><span>Save</span>')}<button type="button" class="button light" data-copy-link>Copy link</button>${cal}`;
+
+    const related = ctx.all.filter((x) => x !== d).map((x) => [x, (x.themes || []).filter((t) => (d.themes || []).includes(t)).length + (x.category === d.category ? 0.5 : 0)])
+      .filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1] || trendScore(b[0]) - trendScore(a[0])).slice(0, 5).map(([x]) => x);
+    slot('side').innerHTML = `
+      <div class="panel"><p class="panel-title">About this post</p><dl class="post-facts">
+        <dt>Kind</dt><dd><a href="${esc(link('community.html?category=' + d.category + '#browse'))}">${esc(cat.label || d.categoryName)}</a></dd>
+        <dt>Posted</dt><dd>${esc(new Date(d.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}</dd>
+        <dt>Replies</dt><dd>${d.comments || 0}</dd>${d.upvotes ? `<dt>Upvotes</dt><dd>${d.upvotes}</dd>` : ''}
+        ${Object.entries(d.fields || {}).filter(([k]) => ['stage', 'status', 'kind', 'geography', 'format', 'location', 'role'].includes(k)).map(([k, v]) => `<dt>${esc(k[0].toUpperCase() + k.slice(1))}</dt><dd>${esc(v)}</dd>`).join('')}
+      </dl></div>
+      ${related.length ? `<div class="panel"><p class="panel-title">Related</p><ul class="compact-list">${related.map((x) => compactCard(x, ctx)).join('')}</ul></div>` : ''}
+      <div class="side-cta"><strong>Have something to add?</strong><p>Reply on GitHub, or start a post of your own.</p><a class="button" href="${REPO}/new/choose" data-compose>Start a post</a></div>`;
+
+    slot('body').innerHTML = '<div class="skeleton"><i></i><i></i><i></i></div>';
+    getJSON(`data/${example ? 'examples/' : ''}posts/${d.number}.json`).then((post) => {
+      slot('body').innerHTML = cleanHTML(post.bodyHTML) || `<p>${esc(d.excerpt)}</p>`;
+      const comments = (post.comments || []).slice().sort((a, b) => (b.isAnswer && d.category === 'q-a') - (a.isAnswer && d.category === 'q-a') || a.createdAt.localeCompare(b.createdAt));
+      const reply = (c, nested) => `
+        <article class="reply${c.isAnswer ? ' is-answer' : ''}${nested ? ' nested' : ''}">
+          <header>${avatar(c, nested ? 24 : 30)}<a class="who" href="${esc(memberHref(c.author))}">${esc(c.author)}</a><span>${esc(ago(c.createdAt))}</span>${c.upvotes ? `<span title="Upvotes">↑ ${c.upvotes}</span>` : ''}${c.isAnswer ? '<span class="badge good">Accepted answer</span>' : ''}</header>
+          <div class="post-body">${cleanHTML(c.bodyHTML)}</div>
+          ${(c.replies || []).map((r) => reply(r, true)).join('')}
+          ${c.moreReplies ? `<a class="more-on-gh" href="${esc(d.url)}">${plural(c.moreReplies, 'more reply', 'more replies')} on GitHub ↗</a>` : ''}
+        </article>`;
+      slot('replies').innerHTML = comments.length
+        ? `<h2>${plural(d.comments || comments.length, 'reply', 'replies')}</h2>${comments.map((c) => reply(c, false)).join('')}${post.moreComments ? `<a class="more-on-gh" href="${esc(d.url)}">${plural(post.moreComments, 'more reply', 'more replies')} on GitHub ↗</a>` : ''}`
+        : `<div class="no-replies"><strong>${d.category === 'q-a' ? 'No answers yet.' : 'No replies yet.'}</strong><p>${d.category === 'q-a' ? 'If you know something that helps, answer on GitHub.' : 'Be the first to reply on GitHub.'}</p></div>`;
+      slot('cta').innerHTML = `<a class="button primary" href="${esc(d.url)}">${d.category === 'q-a' && !d.answered ? 'Answer on GitHub' : 'Reply on GitHub'} ↗</a><span>Replies use a free GitHub account and appear here after the next refresh.</span>`;
+      postLD(d, post, comments);
+    }).catch(() => {
+      const unlisted = d.category === 'introductions' && !d.directory;
+      slot('body').innerHTML = `${d.excerpt ? `<p>${esc(d.excerpt)}</p>` : ''}<p class="muted-note">${unlisted ? 'This introduction is not in the People directory, so its text stays on GitHub.' : 'The full text is on GitHub.'} <a href="${esc(d.url)}">Read it there ↗</a></p>`;
+      slot('replies').innerHTML = '';
+      postLD(d, null, []);
+    });
+  }
+
+  function postLD(d, post, comments) {
+    const author = (a, url) => ({ '@type': 'Person', name: a, url: url || `https://github.com/${a}` });
+    const pageUrl = `${SITE}/post.html?n=${d.number}`;
+    let ld;
+    if (d.category === 'q-a') {
+      const accepted = comments.find((c) => c.isAnswer);
+      ld = { '@context': 'https://schema.org', '@type': 'QAPage', mainEntity: {
+        '@type': 'Question', name: d.title, text: post ? textOf(post.bodyHTML) : d.excerpt, answerCount: d.comments || 0, upvoteCount: d.upvotes || 0,
+        dateCreated: d.createdAt, author: author(d.author, d.authorUrl), url: pageUrl,
+        ...(accepted ? { acceptedAnswer: { '@type': 'Answer', text: textOf(accepted.bodyHTML), dateCreated: accepted.createdAt, upvoteCount: accepted.upvotes || 0, author: author(accepted.author, accepted.authorUrl), url: pageUrl } } : {}),
+        suggestedAnswer: comments.filter((c) => !c.isAnswer).slice(0, 5).map((c) => ({ '@type': 'Answer', text: textOf(c.bodyHTML), dateCreated: c.createdAt, upvoteCount: c.upvotes || 0, author: author(c.author, c.authorUrl), url: pageUrl })),
+      } };
+    } else {
+      ld = { '@context': 'https://schema.org', '@type': 'DiscussionForumPosting', headline: d.title, text: post ? textOf(post.bodyHTML, 1000) : d.excerpt, url: pageUrl,
+        datePublished: d.createdAt, dateModified: d.updatedAt, author: author(d.author, d.authorUrl), sameAs: d.url,
+        interactionStatistic: [{ '@type': 'InteractionCounter', interactionType: 'https://schema.org/CommentAction', userInteractionCount: d.comments || 0 },
+          { '@type': 'InteractionCounter', interactionType: 'https://schema.org/LikeAction', userInteractionCount: d.upvotes || 0 }],
+        comment: comments.slice(0, 5).map((c) => ({ '@type': 'Comment', text: textOf(c.bodyHTML), datePublished: c.createdAt, author: author(c.author, c.authorUrl) })) };
+    }
+    const s = document.createElement('script'); s.type = 'application/ld+json'; s.textContent = JSON.stringify(ld); document.head.appendChild(s);
+  }
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-copy-link]');
+    if (!b) return;
+    const url = location.href.replace(/[?&]src=example/, '');
+    navigator.clipboard?.writeText(url).then(() => { b.textContent = 'Link copied'; setTimeout(() => { b.textContent = 'Copy link'; }, 1500); }, () => {});
+  });
+
+  // ------------------------------------------------------------------ network: releases from XUrbanAI and UrbanProbe in a theme
+  const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  const NETWORK = [
+    { key: 'xurbanai', name: 'XUrbanAI', base: LOCAL ? '/xurbanai' : 'https://xurbanai.com' },
+    { key: 'urbanprobe', name: 'UrbanProbe', base: LOCAL ? '/urbanprobe' : 'https://urbanprobe.com' },
+  ];
+  function networkReleases(el) {
+    const slug = el.dataset.themeFrom ? params.get(el.dataset.themeFrom) : el.dataset.theme;
+    Promise.all(NETWORK.map((s) => Promise.all([getJSON(`${s.base}/data/${example ? 'examples/' : ''}registry.json`), getJSON(`${s.base}/data/schema.json`)])
+      .then(([data, schema]) => (schema['x-registries'] || []).flatMap((r) => (data[r.key] || []).filter((e) => e.status === 'released' && (!slug || (e.themes || []).includes(slug)))
+        .map((e) => ({ site: s, reg: r, e }))))
+      .catch(() => []))).then((lists) => {
+      const rows = lists.flat().sort((a, b) => String(b.e.updated || b.e.released).localeCompare(String(a.e.updated || a.e.released))).slice(0, 6);
+      const target = el.closest('[data-hide-target]') || el;
+      if (!rows.length) { target.hidden = true; return; }
+      el.innerHTML = `<div class="net-grid">${rows.map(({ site, reg, e }) => `
+        <a class="net-card" href="${esc(`${site.base}/entry.html?registry=${reg.key}&id=${e.id}${example ? '&src=example' : ''}`)}">
+          <span class="net-site">${esc(site.name)} · ${esc(reg.singular)}</span><strong>${esc(e.title)}</strong><small>${esc(e.summary)}</small><span class="net-v">v${esc(e.version || '')}</span>
+        </a>`).join('')}</div>`;
+      target.hidden = false;
+    });
   }
 
   // ------------------------------------------------------------------ composer dialog
@@ -652,5 +792,5 @@
   });
 
   // ------------------------------------------------------------------ public API for palette.js
-  window.CCC = { ready, esc, ago, avatar, link, saved, trendScore, REPO, SITE, example, openComposer: (slug, theme) => openComposer(slug, theme) };
+  window.CCC = { ready, esc, ago, avatar, link, saved, trendScore, REPO, SITE, example, postHref: (d) => postHref(d), openComposer: (slug, theme) => openComposer(slug, theme) };
 })();

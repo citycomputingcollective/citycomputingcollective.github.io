@@ -7,6 +7,10 @@ structured fields read from the discussion form (stage, deadline, event date...)
 Introductions contribute directory fields only when the author ticked the
 "People directory" box.
 
+It also writes data/posts/<number>.json with the GitHub-rendered body and the replies of each
+discussion, for the on-site post pages. Introductions whose author did not tick the directory box
+get no post file, so their text stays on GitHub only.
+
 Alongside the JSON it writes subscription feeds under feeds/: an RSS feed of all discussions,
 one RSS feed per research theme, and an iCalendar feed of events.
 
@@ -33,6 +37,7 @@ import yaml
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "discussions.json"
 FEEDS = ROOT / "feeds"
+POSTS = ROOT / "data" / "posts"
 SITE = "https://citycomputingcollective.com"
 TEMPLATES = ROOT / ".github" / "DISCUSSION_TEMPLATE"
 TAXONOMY = json.loads((ROOT / "data" / "taxonomy.json").read_text(encoding="utf-8"))
@@ -54,13 +59,20 @@ EXPORT = {
 QUERY = """
 query($owner: String!, $name: String!, $after: String) {
   repository(owner: $owner, name: $name) {
-    discussions(first: 100, after: $after, orderBy: {field: UPDATED_AT, direction: DESC}) {
+    discussions(first: 50, after: $after, orderBy: {field: UPDATED_AT, direction: DESC}) {
       pageInfo { hasNextPage endCursor }
       nodes {
-        number title url body createdAt updatedAt upvoteCount isAnswered locked
+        number title url body bodyHTML createdAt updatedAt upvoteCount isAnswered locked
         category { name slug }
         author { login url avatarUrl }
-        comments { totalCount }
+        comments(first: 40) {
+          totalCount
+          nodes {
+            bodyHTML createdAt upvoteCount isAnswer
+            author { login url avatarUrl }
+            replies(first: 20) { totalCount nodes { bodyHTML createdAt upvoteCount author { login url avatarUrl } } }
+          }
+        }
       }
     }
   }
@@ -196,12 +208,53 @@ def reduce(node, label_maps):
     return item
 
 
+def person(a):
+    a = a or {}
+    return {"author": a.get("login", "ghost"), "authorUrl": a.get("url", ""), "avatar": a.get("avatarUrl", "")}
+
+
+def post_file(node, item):
+    """Body and replies for the on-site post page, or None when the text should stay on GitHub."""
+    if item["category"] == "introductions" and not item.get("directory"):
+        return None
+    comments = []
+    for c in (node.get("comments") or {}).get("nodes") or []:
+        comments.append({**person(c.get("author")), "createdAt": c["createdAt"], "upvotes": c.get("upvoteCount", 0),
+                         "isAnswer": bool(c.get("isAnswer")), "bodyHTML": c.get("bodyHTML", ""),
+                         "replies": [{**person(r.get("author")), "createdAt": r["createdAt"], "upvotes": r.get("upvoteCount", 0), "bodyHTML": r.get("bodyHTML", "")}
+                                     for r in ((c.get("replies") or {}).get("nodes") or [])],
+                         "moreReplies": max(0, ((c.get("replies") or {}).get("totalCount") or 0) - len((c.get("replies") or {}).get("nodes") or []))})
+    return {"number": node["number"], "bodyHTML": node.get("bodyHTML", ""), "comments": comments,
+            "moreComments": max(0, ((node.get("comments") or {}).get("totalCount") or 0) - len(comments))}
+
+
+def write_posts(pairs):
+    """Write changed post files and remove files of deleted or withdrawn discussions. Returns True if anything changed."""
+    POSTS.mkdir(parents=True, exist_ok=True)
+    changed, keep = False, set()
+    for node, item in pairs:
+        data = post_file(node, item)
+        if data is None:
+            continue
+        path = POSTS / f"{node['number']}.json"
+        keep.add(path.name)
+        text = json.dumps(data, indent=1, ensure_ascii=False) + "\n"
+        if not path.exists() or path.read_text(encoding="utf-8") != text:
+            path.write_text(text, encoding="utf-8", newline="\n")
+            changed = True
+    for old in POSTS.glob("*.json"):
+        if old.name not in keep:
+            old.unlink()
+            changed = True
+    return changed
+
+
 def rss(path, title, link, description, items):
     def item(d):
         cats = "".join(f"<category>{html.escape(c)}</category>" for c in [d.get("categoryName", "")] + d.get("themes", []) if c)
         when = email.utils.format_datetime(dt.datetime.fromisoformat(d["createdAt"].replace("Z", "+00:00")))
         desc = html.escape(d.get("excerpt") or d.get("categoryName", ""))
-        return (f"<item><title>{html.escape(d['title'])}</title><link>{html.escape(d['url'])}</link>"
+        return (f"<item><title>{html.escape(d['title'])}</title><link>{SITE}/post.html?n={d['number']}</link>"
                 f"<guid isPermaLink=\"true\">{html.escape(d['url'])}</guid><pubDate>{when}</pubDate>"
                 f"<dc:creator>{html.escape(d.get('author', ''))}</dc:creator>{cats}<description>{desc}</description></item>")
     newest = sorted(items, key=lambda d: d["createdAt"], reverse=True)[:50]
@@ -289,10 +342,12 @@ def main():
         owner, name = repo.split("/", 1)
         nodes = fetch(owner, name, token)
 
-    discussions = [reduce(n, label_maps) for n in nodes if n.get("category")]
+    pairs = [(n, reduce(n, label_maps)) for n in nodes if n.get("category")]
+    discussions = [item for _, item in pairs]
+    posts_changed = write_posts(pairs)
     previous = json.loads(OUT.read_text(encoding="utf-8")) if OUT.exists() else {}
     feeds_missing = not (FEEDS / "all.xml").exists() or not (FEEDS / "events.ics").exists()
-    if previous.get("discussions") == discussions and "--force" not in sys.argv:
+    if previous.get("discussions") == discussions and not posts_changed and "--force" not in sys.argv:
         if feeds_missing:
             write_feeds(discussions)
             print(f"unchanged ({len(discussions)} discussions); feeds written")

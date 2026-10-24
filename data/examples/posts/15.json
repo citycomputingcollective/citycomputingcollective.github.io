@@ -1,0 +1,46 @@
+{
+ "number": 15,
+ "bodyHTML": "<h3 dir=\"auto\">Research question</h3>\n<p dir=\"auto\">How much does street-level air temperature differ from satellite land-surface temperature across neighbourhoods, and who is most exposed?</p>\n<h3 dir=\"auto\">Project stage</h3>\n<p dir=\"auto\">Team forming</p>\n<h3 dir=\"auto\">City or geography</h3>\n<p dir=\"auto\">Two mid-sized US cities</p>\n<h3 dir=\"auto\">Available data and intended methods</h3>\n<p dir=\"auto\">Thirty low-cost sensors deployed for one summer, Landsat land-surface temperature, and census tract demographics. Mixed-effects models of the street–satellite gap.</p>\n<h3 dir=\"auto\">Expertise needed</h3>\n<p dir=\"auto\">Someone with sensor calibration experience, and someone who knows exposure assessment in public health.</p>\n<h3 dir=\"auto\">Time, output, and credit expectations</h3>\n<p dir=\"auto\">About two hours a week until March; a co-authored paper and an open dataset.</p>\n<h3 dir=\"auto\">Relevant public links</h3>\n<p dir=\"auto\"><em>No response</em></p>\n<h3 dir=\"auto\">Research themes</h3>\n<p dir=\"auto\">Climate, Energy &amp; Resilience, Urban Sensing &amp; Spatial Data</p>\n<h3 dir=\"auto\">Community agreement</h3>\n<p dir=\"auto\"><ul class=\"contains-task-list\"><li class=\"task-list-item\"><input type=\"checkbox\" checked disabled> I will follow the Code of Conduct</li></ul></p>\n",
+ "comments": [
+  {
+   "author": "example-member-6",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-13T09:10:00Z",
+   "upvotes": 3,
+   "isAnswer": false,
+   "bodyHTML": "<p>I calibrated a similar network in 2024. Happy to share our co-location protocol; drift was the main issue.</p>",
+   "replies": [
+    {
+     "author": "example-member-1",
+     "authorUrl": "",
+     "avatar": "",
+     "createdAt": "2026-10-13T11:00:00Z",
+     "upvotes": 1,
+     "bodyHTML": "<p>That would help a lot. Did you correct for radiation shields?</p>"
+    },
+    {
+     "author": "example-member-6",
+     "authorUrl": "",
+     "avatar": "",
+     "createdAt": "2026-10-13T12:30:00Z",
+     "upvotes": 0,
+     "bodyHTML": "<p>Yes, all units were shielded; the protocol covers the comparison runs.</p>"
+    }
+   ],
+   "moreReplies": 0
+  },
+  {
+   "author": "example-member-9",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-15T16:00:00Z",
+   "upvotes": 2,
+   "isAnswer": false,
+   "bodyHTML": "<p>For exposure, consider weighting by time spent outdoors; <a href=\"https://example.org\">this paper</a> has a simple approach.</p>",
+   "replies": [],
+   "moreReplies": 0
+  }
+ ],
+ "moreComments": 0
+}

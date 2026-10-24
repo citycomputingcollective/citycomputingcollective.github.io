@@ -10,6 +10,7 @@ Official website and community hub for the City Computing Collective. Static sit
 | `community.html` | The explorer: search, kind of post, research theme, sort; theme view; start a post |
 | `people.html` | Opt-in People directory built from introductions |
 | `theme.html?t=<slug>` | Theme hub: collaborations, questions, projects, resources, calls, events, and people for one research theme, with its RSS feed |
+| `post.html?n=<number>` | A discussion on the site: structured form answers, body, replies with the accepted answer first, related posts, and Q&A or forum structured data |
 | `member.html?u=<login>` | Member page: a person's directory entry (if listed), themes, and every public post |
 | `projects.html` | Projects from the Project Showcase category, filterable by status |
 | `resources.html` | Datasets, data requests, tools and methods; connected platforms; sharing standard |
@@ -25,6 +26,7 @@ Shared assets: `community.css`, `assets/site.js` (data, views, composer, saved i
 ```
 GitHub Discussions ──► .github/workflows/discussions-feed.yml (on change + every 6 h)
                          └─► .github/scripts/export_discussions.py ──► data/discussions.json ──► assets/site.js
+                         ├─► data/posts/<number>.json (GitHub-rendered body and replies)
                          └─► feeds/all.xml, feeds/theme-<slug>.xml (RSS), feeds/events.ics (calendar)
 data/taxonomy.json  ──► categories and research themes, shared by the exporter, the templates and the site
 ```
@@ -94,3 +96,9 @@ Every page ends with the network footer: the four sites in the same order (Urban
 ## Editing
 
 Pages share the same header, footer, and `<head>` block. When changing them, change every page. Navigation marks the current page with `aria-current="page"`.
+
+## Post pages and the wider network
+
+- `post.html` renders `data/posts/<number>.json`. The HTML is GitHub's own rendering; the page removes scripts, event handlers, and form boilerplate before showing it. Introductions outside the People directory have no post file, so their text stays on GitHub.
+- Theme hubs list releases from XUrbanAI and UrbanProbe in the same theme, read from those sites' public `data/registry.json` (open CORS on GitHub Pages). On `localhost` the hub reads sibling folders `/xurbanai` and `/urbanprobe` instead, for local previews of all sites together.
+

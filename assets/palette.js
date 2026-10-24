@@ -69,7 +69,7 @@
       const themes = ctx.themes.map((t) => ({ kind: 'theme', title: t.label, sub: `${t.code} · ${t.blurb || ''}`, href: `theme.html?t=${t.slug}` }));
       const posts = ctx.all.map((d) => ({
         kind: 'post', title: d.title, sub: `${ctx.cats[d.category]?.short || d.categoryName} · ${d.author} · ${C.ago(d.updatedAt)}`,
-        href: d.url, external: true, extra: [d.excerpt, d.author, ...(d.themes || []), ...Object.values(d.fields || {})].join(' '), score: C.trendScore(d),
+        href: `post.html?n=${d.number}`, extra: [d.excerpt, d.author, ...(d.themes || []), ...Object.values(d.fields || {})].join(' '), score: C.trendScore(d),
       }));
       const people = ctx.all.filter((d) => d.directory).map((d) => ({
         kind: 'person', title: d.fields?.role || d.author, sub: [d.author, d.fields?.location].filter(Boolean).join(' · '),
