@@ -18,6 +18,7 @@
   <meta property="og:image:alt" content="City Computing Collective: an open community for computational urban research.">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a2e'/%3E%3Cpath d='M12 52L52 12' stroke='%232aa8b4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='7' fill='%23f36f45'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23f36f45'/%3E%3C/svg%3E">
+  <link rel="alternate" type="application/rss+xml" title="City Computing Collective — all discussions" href="feeds/all.xml">
   <link rel="stylesheet" href="community.css">
   <script type="application/ld+json">
 {
@@ -42,6 +43,7 @@
   <header>
     <div class="nav">
       <a class="brand" href="index.html" aria-current="page"><span class="brand-mark" aria-hidden="true"></span>City Computing Collective</a>
+      <button class="nav-search" type="button" data-palette hidden aria-label="Search the community"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       <nav id="site-nav" aria-label="Primary">
         <a href="community.html">Community</a>
@@ -135,10 +137,10 @@
 
     <section id="activity">
       <div class="section-head">
-        <div><div class="eyebrow">Latest activity</div><h2>What the community is discussing.</h2></div>
+        <div><div class="eyebrow">Trending</div><h2>What the community is discussing.</h2></div>
         <a class="more" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions">All discussions &rarr;</a>
       </div>
-      <div data-view="list" data-page="6" data-label="discussions" data-label-one="discussion" data-more-href="community.html#browse">
+      <div data-view="list" data-page="6" data-sort="trending" data-label="discussions" data-label-one="discussion" data-more-href="community.html#browse">
         <div class="empty">
           <div><strong>No discussions yet.</strong><p>The first post sets the tone. Introduce your work, or start a collaboration request.</p></div>
           <a class="button primary" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=introductions">Introduce yourself</a>
@@ -150,16 +152,16 @@
     <section id="systems">
       <div class="eyebrow">Research across urban systems</div>
       <h2>One city, many interacting systems.</h2>
-      <p class="section-intro">Every post is tagged with the urban systems it concerns. Select a theme to see its discussions, projects, data, and events.</p>
+      <p class="section-intro">Every post is tagged with the urban systems it concerns. Each theme has a hub with its open questions, collaborations, projects, data, events, and people.</p>
       <div class="system-grid">
-        <a class="system" href="community.html?theme=mobility#browse"><span class="system-code">UC.01</span><strong>Mobility &amp; Transportation</strong><span class="count" data-theme-count="mobility" hidden></span></a>
-        <a class="system" href="community.html?theme=built-environment#browse"><span class="system-code">UC.02</span><strong>Built Environment &amp; Land Use</strong><span class="count" data-theme-count="built-environment" hidden></span></a>
-        <a class="system" href="community.html?theme=housing#browse"><span class="system-code">UC.03</span><strong>Housing &amp; Urban Economics</strong><span class="count" data-theme-count="housing" hidden></span></a>
-        <a class="system" href="community.html?theme=climate#browse"><span class="system-code">UC.04</span><strong>Climate, Energy &amp; Resilience</strong><span class="count" data-theme-count="climate" hidden></span></a>
-        <a class="system" href="community.html?theme=health-equity#browse"><span class="system-code">UC.05</span><strong>Health, Equity &amp; Accessibility</strong><span class="count" data-theme-count="health-equity" hidden></span></a>
-        <a class="system" href="community.html?theme=sensing#browse"><span class="system-code">UC.06</span><strong>Urban Sensing &amp; Spatial Data</strong><span class="count" data-theme-count="sensing" hidden></span></a>
-        <a class="system" href="community.html?theme=governance#browse"><span class="system-code">UC.07</span><strong>Governance &amp; Participation</strong><span class="count" data-theme-count="governance" hidden></span></a>
-        <a class="system" href="community.html?theme=urban-ai#browse"><span class="system-code">UC.08</span><strong>Urban AI &amp; Simulation</strong><span class="count" data-theme-count="urban-ai" hidden></span></a>
+        <a class="system" href="theme.html?t=mobility"><span class="system-code">UC.01</span><strong>Mobility &amp; Transportation</strong><span class="count" data-theme-count="mobility" hidden></span></a>
+        <a class="system" href="theme.html?t=built-environment"><span class="system-code">UC.02</span><strong>Built Environment &amp; Land Use</strong><span class="count" data-theme-count="built-environment" hidden></span></a>
+        <a class="system" href="theme.html?t=housing"><span class="system-code">UC.03</span><strong>Housing &amp; Urban Economics</strong><span class="count" data-theme-count="housing" hidden></span></a>
+        <a class="system" href="theme.html?t=climate"><span class="system-code">UC.04</span><strong>Climate, Energy &amp; Resilience</strong><span class="count" data-theme-count="climate" hidden></span></a>
+        <a class="system" href="theme.html?t=health-equity"><span class="system-code">UC.05</span><strong>Health, Equity &amp; Accessibility</strong><span class="count" data-theme-count="health-equity" hidden></span></a>
+        <a class="system" href="theme.html?t=sensing"><span class="system-code">UC.06</span><strong>Urban Sensing &amp; Spatial Data</strong><span class="count" data-theme-count="sensing" hidden></span></a>
+        <a class="system" href="theme.html?t=governance"><span class="system-code">UC.07</span><strong>Governance &amp; Participation</strong><span class="count" data-theme-count="governance" hidden></span></a>
+        <a class="system" href="theme.html?t=urban-ai"><span class="system-code">UC.08</span><strong>Urban AI &amp; Simulation</strong><span class="count" data-theme-count="urban-ai" hidden></span></a>
       </div>
     </section>
 
@@ -189,5 +191,6 @@
     </div>
   </footer>
   <script src="assets/site.js"></script>
+  <script src="assets/palette.js"></script>
 </body>
 </html>

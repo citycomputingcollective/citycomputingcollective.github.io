@@ -1,0 +1,18 @@
+{
+ "number": 7,
+ "bodyHTML": "<h3 dir=\"auto\">Name or preferred name and current role</h3>\n<p dir=\"auto\">PhD student in city planning</p>\n<h3 dir=\"auto\">City, region, and time zone</h3>\n<p dir=\"auto\">North Carolina, US (ET)</p>\n<h3 dir=\"auto\">Urban questions and research themes</h3>\n<p dir=\"auto\">Heat exposure and how it is measured.</p>\n<h3 dir=\"auto\">Methods, data, and experience</h3>\n<p dir=\"auto\">Remote sensing, mixed-effects models, low-cost sensors.</p>\n<h3 dir=\"auto\">Collaboration goals</h3>\n<p dir=\"auto\">Looking for collaborators on heat exposure and street-level sensing; happy to share remote sensing workflows.</p>\n",
+ "comments": [
+  {
+   "author": "example-member-6",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-08T12:00:00Z",
+   "upvotes": 1,
+   "isAnswer": false,
+   "bodyHTML": "<p>Welcome! See the collaboration post on street-level heat.</p>",
+   "replies": [],
+   "moreReplies": 0
+  }
+ ],
+ "moreComments": 0
+}

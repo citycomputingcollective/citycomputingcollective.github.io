@@ -7,6 +7,13 @@ structured fields read from the discussion form (stage, deadline, event date...)
 Introductions contribute directory fields only when the author ticked the
 "People directory" box.
 
+It also writes data/posts/<number>.json with the GitHub-rendered body and the replies of each
+discussion, for the on-site post pages. Introductions whose author did not tick the directory box
+get no post file, so their text stays on GitHub only.
+
+Alongside the JSON it writes subscription feeds under feeds/: an RSS feed of all discussions,
+one RSS feed per research theme, and an iCalendar feed of events.
+
 Usage:
     python .github/scripts/export_discussions.py                   # fetch and write if changed
     python .github/scripts/export_discussions.py --check-templates # verify templates match data/taxonomy.json
@@ -16,6 +23,8 @@ Environment: GH_TOKEN or GITHUB_TOKEN; GITHUB_REPOSITORY (owner/name).
 Requires PyYAML for reading the discussion templates.
 """
 import datetime as dt
+import email.utils
+import html
 import json
 import os
 import pathlib
@@ -27,6 +36,9 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "discussions.json"
+FEEDS = ROOT / "feeds"
+POSTS = ROOT / "data" / "posts"
+SITE = "https://citycomputingcollective.com"
 TEMPLATES = ROOT / ".github" / "DISCUSSION_TEMPLATE"
 TAXONOMY = json.loads((ROOT / "data" / "taxonomy.json").read_text(encoding="utf-8"))
 THEMES = [t["label"] for t in TAXONOMY["themes"]]
@@ -40,20 +52,27 @@ EXPORT = {
     "datasets-data-requests": {"keep": ["kind"], "excerpt": "use"},
     "tools-code-methods": {"keep": ["kind"], "excerpt": "problem"},
     "opportunities": {"keep": ["kind", "deadline", "official"], "excerpt": "relevance", "dates": ["deadline"]},
-    "events-meetups": {"keep": ["date", "format", "registration"], "excerpt": "description", "dates": ["date"]},
+    "events-meetups": {"keep": ["date", "datetime", "format", "registration"], "excerpt": "description", "dates": ["date"]},
     "q-a": {"keep": ["geography"], "excerpt": "context"},
 }
 
 QUERY = """
 query($owner: String!, $name: String!, $after: String) {
   repository(owner: $owner, name: $name) {
-    discussions(first: 100, after: $after, orderBy: {field: UPDATED_AT, direction: DESC}) {
+    discussions(first: 50, after: $after, orderBy: {field: UPDATED_AT, direction: DESC}) {
       pageInfo { hasNextPage endCursor }
       nodes {
-        number title url body createdAt updatedAt upvoteCount isAnswered locked
+        number title url body bodyHTML createdAt updatedAt upvoteCount isAnswered locked
         category { name slug }
         author { login url avatarUrl }
-        comments { totalCount }
+        comments(first: 40) {
+          totalCount
+          nodes {
+            bodyHTML createdAt upvoteCount isAnswer
+            author { login url avatarUrl }
+            replies(first: 20) { totalCount nodes { bodyHTML createdAt upvoteCount author { login url avatarUrl } } }
+          }
+        }
       }
     }
   }
@@ -189,6 +208,107 @@ def reduce(node, label_maps):
     return item
 
 
+def person(a):
+    a = a or {}
+    return {"author": a.get("login", "ghost"), "authorUrl": a.get("url", ""), "avatar": a.get("avatarUrl", "")}
+
+
+def post_file(node, item):
+    """Body and replies for the on-site post page, or None when the text should stay on GitHub."""
+    if item["category"] == "introductions" and not item.get("directory"):
+        return None
+    comments = []
+    for c in (node.get("comments") or {}).get("nodes") or []:
+        comments.append({**person(c.get("author")), "createdAt": c["createdAt"], "upvotes": c.get("upvoteCount", 0),
+                         "isAnswer": bool(c.get("isAnswer")), "bodyHTML": c.get("bodyHTML", ""),
+                         "replies": [{**person(r.get("author")), "createdAt": r["createdAt"], "upvotes": r.get("upvoteCount", 0), "bodyHTML": r.get("bodyHTML", "")}
+                                     for r in ((c.get("replies") or {}).get("nodes") or [])],
+                         "moreReplies": max(0, ((c.get("replies") or {}).get("totalCount") or 0) - len((c.get("replies") or {}).get("nodes") or []))})
+    return {"number": node["number"], "bodyHTML": node.get("bodyHTML", ""), "comments": comments,
+            "moreComments": max(0, ((node.get("comments") or {}).get("totalCount") or 0) - len(comments))}
+
+
+def write_posts(pairs):
+    """Write changed post files and remove files of deleted or withdrawn discussions. Returns True if anything changed."""
+    POSTS.mkdir(parents=True, exist_ok=True)
+    changed, keep = False, set()
+    for node, item in pairs:
+        data = post_file(node, item)
+        if data is None:
+            continue
+        path = POSTS / f"{node['number']}.json"
+        keep.add(path.name)
+        text = json.dumps(data, indent=1, ensure_ascii=False) + "\n"
+        if not path.exists() or path.read_text(encoding="utf-8") != text:
+            path.write_text(text, encoding="utf-8", newline="\n")
+            changed = True
+    for old in POSTS.glob("*.json"):
+        if old.name not in keep:
+            old.unlink()
+            changed = True
+    return changed
+
+
+def rss(path, title, link, description, items):
+    def item(d):
+        cats = "".join(f"<category>{html.escape(c)}</category>" for c in [d.get("categoryName", "")] + d.get("themes", []) if c)
+        when = email.utils.format_datetime(dt.datetime.fromisoformat(d["createdAt"].replace("Z", "+00:00")))
+        desc = html.escape(d.get("excerpt") or d.get("categoryName", ""))
+        return (f"<item><title>{html.escape(d['title'])}</title><link>{SITE}/post.html?n={d['number']}</link>"
+                f"<guid isPermaLink=\"true\">{html.escape(d['url'])}</guid><pubDate>{when}</pubDate>"
+                f"<dc:creator>{html.escape(d.get('author', ''))}</dc:creator>{cats}<description>{desc}</description></item>")
+    newest = sorted(items, key=lambda d: d["createdAt"], reverse=True)[:50]
+    body = "\n".join(item(d) for d in newest)
+    xml = (f'<?xml version="1.0" encoding="UTF-8"?>\n'
+           f'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">\n<channel>\n'
+           f"<title>{html.escape(title)}</title><link>{link}</link><description>{html.escape(description)}</description><language>en</language>\n"
+           f'<atom:link href="{SITE}/feeds/{path}" rel="self" type="application/rss+xml"/>\n{body}\n</channel>\n</rss>\n')
+    (FEEDS / path).write_text(xml, encoding="utf-8", newline="\n")
+
+
+def ics(items):
+    def text(v):
+        return str(v or "").replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
+
+    def fold(line):
+        out, b = [], line.encode("utf-8")
+        while len(b) > 74:
+            cut = 74
+            while (b[cut] & 0xC0) == 0x80:
+                cut -= 1
+            out.append(b[:cut].decode("utf-8"))
+            b = b" " + b[cut:]
+        out.append(b.decode("utf-8"))
+        return "\r\n".join(out)
+
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//City Computing Collective//Events//EN", "CALSCALE:GREGORIAN",
+             "METHOD:PUBLISH", "X-WR-CALNAME:City Computing Collective events", "X-WR-TIMEZONE:UTC"]
+    for d in items:
+        day = (d.get("fields") or {}).get("date")
+        if not day:
+            continue
+        start = dt.date.fromisoformat(day)
+        f = d.get("fields") or {}
+        desc = "\n".join(x for x in [("Time: " + f["datetime"]) if f.get("datetime") else "", d.get("excerpt", ""), d["url"]] if x)
+        lines += ["BEGIN:VEVENT", f"UID:ccc-{d['number']}@citycomputingcollective.com", f"DTSTAMP:{stamp}",
+                  f"DTSTART;VALUE=DATE:{start:%Y%m%d}", f"DTEND;VALUE=DATE:{start + dt.timedelta(days=1):%Y%m%d}",
+                  f"SUMMARY:{text(d['title'])}", f"DESCRIPTION:{text(desc)}", f"URL:{d['url']}",
+                  f"LOCATION:{text(f.get('registration') or f.get('format') or '')}", "END:VEVENT"]
+    lines.append("END:VCALENDAR")
+    (FEEDS / "events.ics").write_text("\r\n".join(fold(l) for l in lines) + "\r\n", encoding="utf-8", newline="")
+
+
+def write_feeds(discussions):
+    FEEDS.mkdir(exist_ok=True)
+    rss("all.xml", "City Computing Collective — all discussions", f"{SITE}/community.html",
+        "New discussions in the City Computing Collective.", discussions)
+    for t in TAXONOMY["themes"]:
+        rss(f"theme-{t['slug']}.xml", f"City Computing Collective — {t['label']}", f"{SITE}/theme.html?t={t['slug']}",
+            t.get("blurb", t["label"]), [d for d in discussions if t["label"] in d.get("themes", [])])
+    ics([d for d in discussions if d["category"] == "events-meetups"])
+
+
 def fetch(owner, name, token):
     nodes, after = [], None
     while len(nodes) < MAX_DISCUSSIONS:
@@ -222,17 +342,25 @@ def main():
         owner, name = repo.split("/", 1)
         nodes = fetch(owner, name, token)
 
-    discussions = [reduce(n, label_maps) for n in nodes if n.get("category")]
+    pairs = [(n, reduce(n, label_maps)) for n in nodes if n.get("category")]
+    discussions = [item for _, item in pairs]
+    posts_changed = write_posts(pairs)
     previous = json.loads(OUT.read_text(encoding="utf-8")) if OUT.exists() else {}
-    if previous.get("discussions") == discussions and "--force" not in sys.argv:
-        print(f"unchanged ({len(discussions)} discussions)")
+    feeds_missing = not (FEEDS / "all.xml").exists() or not (FEEDS / "events.ics").exists()
+    if previous.get("discussions") == discussions and not posts_changed and "--force" not in sys.argv:
+        if feeds_missing:
+            write_feeds(discussions)
+            print(f"unchanged ({len(discussions)} discussions); feeds written")
+        else:
+            print(f"unchanged ({len(discussions)} discussions)")
         return
     out = {
         "generated": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "discussions": discussions,
     }
     OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
-    print(f"updated: {len(discussions)} discussions")
+    write_feeds(discussions)
+    print(f"updated: {len(discussions)} discussions and feeds")
 
 
 if __name__ == "__main__":

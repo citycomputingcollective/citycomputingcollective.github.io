@@ -1,0 +1,29 @@
+{
+ "number": 14,
+ "bodyHTML": "<h3 dir=\"auto\">Your question in one sentence</h3>\n<p dir=\"auto\">How do you validate perception scores from street-view images?</p>\n<h3 dir=\"auto\">Context and what you tried</h3>\n<p dir=\"auto\">I have model-predicted safety scores for 12,000 street segments and a resident survey covering 300 of them. Rank correlation is 0.41; I am not sure that is the right test.</p>\n<h3 dir=\"auto\">City or geography, if relevant</h3>\n<p dir=\"auto\">Any</p>\n",
+ "comments": [
+  {
+   "author": "example-member-5",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-14T10:00:00Z",
+   "upvotes": 6,
+   "isAnswer": true,
+   "bodyHTML": "<p>Report rank correlation, but also check calibration within neighbourhoods. A model can rank cities well and still miss variation within them.</p><pre><code>spearman(score, survey) by tract</code></pre>",
+   "replies": [],
+   "moreReplies": 0
+  },
+  {
+   "author": "example-member-7",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-14T13:00:00Z",
+   "upvotes": 2,
+   "isAnswer": false,
+   "bodyHTML": "<p>Make sure the survey sample is not concentrated on busy streets; reweight if it is.</p>",
+   "replies": [],
+   "moreReplies": 0
+  }
+ ],
+ "moreComments": 0
+}

@@ -1,0 +1,27 @@
+{
+ "number": 12,
+ "bodyHTML": "<h3 dir=\"auto\">Event title and organizer</h3>\n<p dir=\"auto\">Methods clinic: causal designs for urban interventions — City Computing Collective</p>\n<h3 dir=\"auto\">Event date</h3>\n<p dir=\"auto\">2026-11-05</p>\n<h3 dir=\"auto\">Time, duration, and time zone</h3>\n<p dir=\"auto\">15:00–16:00 UTC</p>\n<h3 dir=\"auto\">Format</h3>\n<p dir=\"auto\">Online</p>\n<h3 dir=\"auto\">Location or access information</h3>\n<p dir=\"auto\">Video call; the link is sent after registration.</p>\n<h3 dir=\"auto\">Registration or official URL</h3>\n<p dir=\"auto\"><a href=\"https://example.org\">https://example.org</a></p>\n<h3 dir=\"auto\">Audience, topics, accessibility, capacity, and recording information</h3>\n<p dir=\"auto\">Researchers at any stage. Two short cases, then open questions. Captions on; not recorded.</p>\n",
+ "comments": [
+  {
+   "author": "example-member-2",
+   "authorUrl": "",
+   "avatar": "",
+   "createdAt": "2026-10-11T08:00:00Z",
+   "upvotes": 1,
+   "isAnswer": false,
+   "bodyHTML": "<p>Will you cover synthetic control?</p>",
+   "replies": [
+    {
+     "author": "example-member-4",
+     "authorUrl": "",
+     "avatar": "",
+     "createdAt": "2026-10-11T09:00:00Z",
+     "upvotes": 0,
+     "bodyHTML": "<p>Yes, one of the two cases uses it.</p>"
+    }
+   ],
+   "moreReplies": 0
+  }
+ ],
+ "moreComments": 0
+}

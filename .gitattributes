@@ -1,3 +1,5 @@
 * text=auto eol=lf
 *.png binary
 *.jpg binary
+# iCalendar requires CRLF line endings; store calendar files byte for byte
+*.ics -text

@@ -18,6 +18,7 @@
   <meta property="og:image:alt" content="City Computing Collective: an open community for computational urban research.">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a2e'/%3E%3Cpath d='M12 52L52 12' stroke='%232aa8b4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='7' fill='%23f36f45'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23f36f45'/%3E%3C/svg%3E">
+  <link rel="alternate" type="application/rss+xml" title="City Computing Collective — all discussions" href="feeds/all.xml">
   <link rel="stylesheet" href="community.css">
 </head>
 <body>
@@ -25,6 +26,7 @@
   <header>
     <div class="nav">
       <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>City Computing Collective</a>
+      <button class="nav-search" type="button" data-palette hidden aria-label="Search the community"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       <nav id="site-nav" aria-label="Primary">
         <a href="community.html" aria-current="page">Community</a>
@@ -55,7 +57,7 @@
     <section class="explorer" id="browse" aria-labelledby="browse-title">
       <h2 class="visually-hidden" id="browse-title">Browse discussions</h2>
       <div class="explorer-shell">
-        <div data-view="list" data-controls="search,theme,sort,facet" data-facet="category" data-sync="url" data-page="12" data-label="posts" data-label-one="post" data-theme-header data-github-search data-offer-compose>
+        <div data-view="list" data-controls="search,theme,sort,facet" data-facet="category" data-sync="url" data-sort="trending" data-page="12" data-label="posts" data-label-one="post" data-theme-header data-github-search data-offer-compose data-saved-toggle>
           <div class="empty empty-rich">
             <div class="empty-head"><span class="empty-badge">Early community</span><strong>The first posts set the tone.</strong><p>There are no discussions yet. Each kind of post has a short form, so a first post takes a few minutes.</p></div>
             <div class="empty-actions">
@@ -73,8 +75,12 @@
             <p>Pick the kind of post, see what its form asks for, then continue on GitHub.</p>
             <a class="button" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new/choose" data-compose>Start a post</a>
           </div>
+          <div class="panel" data-hide-target>
+            <p class="panel-title">Waiting for an answer</p>
+            <div data-view="list" data-categories="q-a" data-filter="unanswered" data-card="compact" data-page="3" data-sort="new" data-more-href="community.html?category=q-a#browse" data-label="questions" data-label-one="question" data-hide-empty></div>
+          </div>
           <div class="panel">
-            <p class="panel-title">Research themes</p>
+            <p class="panel-title">Research themes <a class="panel-more" href="index.html#systems">All hubs &rarr;</a></p>
             <nav class="theme-links" aria-label="Research themes">
             <a href="community.html?theme=mobility#browse">Mobility &amp; Transportation<small data-theme-count="mobility" hidden></small></a>
             <a href="community.html?theme=built-environment#browse">Built Environment &amp; Land Use<small data-theme-count="built-environment" hidden></small></a>
@@ -89,6 +95,10 @@
           <div class="panel">
             <p class="panel-title">Posting standard</p>
             <div class="side-list"><a href="about.html#governance">Describe the city and the question<small>Avoid context-free technical posts.</small></a><a href="resources.html#share">Document data rights and limits<small>Share only material you may disclose.</small></a><a href="about.html#governance">Be explicit about credit<small>Set expectations before collaborating.</small></a></div>
+          </div>
+          <div class="panel">
+            <p class="panel-title">Subscribe</p>
+            <div class="side-list"><a href="feeds/all.xml">RSS: every new discussion<small>Or follow one theme from its hub.</small></a><a href="feeds/events.ics">Calendar: community events<small>Add this URL to Google, Apple, or Outlook Calendar.</small></a></div>
           </div>
         </aside>
       </div>
@@ -125,5 +135,6 @@
     </div>
   </footer>
   <script src="assets/site.js"></script>
+  <script src="assets/palette.js"></script>
 </body>
 </html>
