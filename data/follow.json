@@ -1,0 +1,1 @@
+{ "$comment": "Set provider to \"buttondown\" and username to the Buttondown username to show an email signup form. Leave provider null to hide it.", "newsletter": { "provider": null, "username": "", "label": "Weekly network digest" } }

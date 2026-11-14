@@ -13,7 +13,7 @@
    "avatar": "",
    "createdAt": "2026-10-16T09:00:00Z",
    "updatedAt": "2026-10-16T15:30:00Z",
-   "comments": 4,
+   "comments": 1,
    "upvotes": 5,
    "excerpt": "This page is showing example data so the layout can be reviewed before real posts exist."
   },
@@ -28,7 +28,7 @@
    "avatar": "",
    "createdAt": "2026-10-12T09:00:00Z",
    "updatedAt": "2026-10-16T15:30:00Z",
-   "comments": 6,
+   "comments": 2,
    "upvotes": 7,
    "excerpt": "How much does street-level air temperature differ from satellite land-surface temperature across neighbourhoods, and who is most exposed?",
    "themes": [
@@ -74,7 +74,7 @@
    "avatar": "",
    "createdAt": "2026-10-14T09:00:00Z",
    "updatedAt": "2026-10-15T15:30:00Z",
-   "comments": 3,
+   "comments": 2,
    "upvotes": 4,
    "excerpt": "I have model-predicted safety scores for street segments and a small resident survey. What is a defensible way to compare them?",
    "themes": [
@@ -120,7 +120,7 @@
    "avatar": "",
    "createdAt": "2026-10-09T09:00:00Z",
    "updatedAt": "2026-10-13T15:30:00Z",
-   "comments": 2,
+   "comments": 1,
    "upvotes": 3,
    "excerpt": "A one-hour online clinic. Bring a design question; two people present short cases.",
    "themes": [
@@ -235,7 +235,7 @@
    "avatar": "",
    "createdAt": "2026-10-08T09:00:00Z",
    "updatedAt": "2026-10-08T15:30:00Z",
-   "comments": 3,
+   "comments": 1,
    "upvotes": 4,
    "excerpt": "Looking for collaborators on heat exposure and street-level sensing; happy to share remote sensing workflows.",
    "themes": [
@@ -268,7 +268,7 @@
    ],
    "fields": {
     "kind": "Postdoc",
-    "deadline": "2026-12-15",
+    "deadline": "2027-12-15",
     "official": "https://example.org"
    }
   },

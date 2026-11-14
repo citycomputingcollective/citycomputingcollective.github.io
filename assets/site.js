@@ -5,6 +5,8 @@
      data/taxonomy.json      categories and research themes, shared with the exporter and the templates
      ?src=example            previews every view with data/examples/discussions.json
 
+   Follow buttons open the shared dialog in assets/follow.js (any element with data-follow).
+
    Views are declared in HTML (data-view="list|stats|theme-hub|member") and configured with data
    attributes; see README. Each keeps its no-JavaScript fallback in the HTML.
    assets/palette.js adds the command palette on top of the API exposed as window.CCC. */
@@ -15,18 +17,21 @@
   const SITE = 'https://citycomputingcollective.com';
   const params = new URLSearchParams(location.search);
   const example = params.get('src') === 'example';
+  // Site root from this script's own URL, so feed and data addresses stay right on 404 pages at nested paths.
+  const ROOT = (() => { try { return new URL('../', document.currentScript.src).href; } catch { return new URL('/', location.href).href; } })();
+  const abs = (p) => new URL(p, ROOT).href;
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ------------------------------------------------------------------ helpers
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const getJSON = (url) => fetch(url, { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(url); return r.json(); });
+  const getJSON = (url) => fetch(abs(url), { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(url); return r.json(); });
   const plural = (n, one, many) => `${n} ${n === 1 ? one : (many || one + 's')}`;
   const today = () => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); };
   const parseDay = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
   const daysUntil = (iso) => { const d = parseDay(iso); return d ? Math.round((d - today()) / 864e5) : null; };
   const fmtDay = (iso, opts) => { const d = parseDay(iso); return d ? d.toLocaleDateString('en-GB', opts || { day: 'numeric', month: 'short', year: 'numeric' }) : ''; };
   const link = (href) => {
-    if (!example || /^(https?:|#|mailto:)/.test(href)) return href;
+    if (!example || /^(https?:|#|mailto:|webcal:)/.test(href) || /[?&]src=/.test(href)) return href;
     const [path, hash = ''] = href.split('#');
     return path + (path.includes('?') ? '&' : '?') + 'src=example' + (hash ? '#' + hash : '');
   };
@@ -49,6 +54,85 @@
     const letter = (/\d+$/.test(name) ? name.match(/\d+$/)[0].slice(-1) : name.charAt(0)).toUpperCase();
     return `<span class="avatar initials" style="--h:${hue(d.author)};width:${size}px;height:${size}px" aria-hidden="true">${esc(letter)}</span>`;
   }
+  // ------------------------------------------------------------------ follow buttons (dialog lives in assets/follow.js)
+  const GH_REPO = 'https://github.com/citycomputingcollective/citycomputingcollective.github.io';
+  const NETWORK_FEEDS = 'https://urbanscience.ai/feeds/';
+  const BELL = '<svg class="follow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
+  const FOLLOW = {
+    all: { title: 'All discussions', what: 'Every new discussion in the City Computing Collective.', feed: abs('feeds/all.xml'), github: GH_REPO, githubKind: 'discussions', newsletter: true },
+    openCalls: { title: 'Open calls', what: 'New calls, grants, positions, and challenges, and a calendar of their deadlines.', feed: abs('feeds/category-opportunities.xml'), ics: abs('feeds/deadlines.ics'), icsName: 'City Computing Collective deadlines' },
+    events: { title: 'Events', what: 'New events: talks, clinics, and meetups.', feed: abs('feeds/category-events-meetups.xml'), ics: abs('feeds/events.ics'), icsName: 'City Computing Collective events' },
+    unanswered: { title: 'Unanswered questions', what: 'Questions that do not have an accepted answer yet.', feed: abs('feeds/unanswered.xml') },
+    category: (c) => ({ title: c.label, what: `New discussions in ${c.label}.`, feed: abs(`feeds/category-${c.slug}.xml`) }),
+    // the network feed adds releases from XUrbanAI and UrbanProbe to the discussions here
+    theme: (t) => ({ title: t.label, what: 'New discussions here plus new releases on XUrbanAI and UrbanProbe for this theme.', feed: `${NETWORK_FEEDS}theme-${t.slug}.xml` }),
+    themeLocal: (t) => ({ title: t.label, what: 'New discussions tagged with this theme. This feed covers discussions only.', feed: abs(`feeds/theme-${t.slug}.xml`) }),
+    // example members and posts have no real feeds, so example mode points at a placeholder file in data/examples/feeds
+    member: (login, name) => ({ title: name, what: `New discussions started by ${login}.`, feed: abs(example ? 'data/examples/feeds/member.xml' : `feeds/member-${login.replace(/[^A-Za-z0-9_-]/g, '_')}.xml`) }),
+    replies: (number) => abs(example ? 'data/examples/feeds/post.xml' : `feeds/post-${number}.xml`),
+  };
+  const followAttrs = (o) => ` data-follow data-follow-title="${esc(o.title)}"`
+    + (o.what ? ` data-follow-what="${esc(o.what)}"` : '') + (o.feed ? ` data-follow-feed="${esc(o.feed)}"` : '')
+    + (o.ics ? ` data-follow-ics="${esc(o.ics)}" data-follow-ics-name="${esc(o.icsName || '')}"` : '')
+    + (o.github ? ` data-follow-github="${esc(o.github)}" data-follow-github-kind="${esc(o.githubKind || 'discussions')}"` : '')
+    + (o.newsletter ? ' data-follow-newsletter="true"' : '');
+  const followBtn = (o, label, cls = 'follow-btn small') => `<button type="button" class="${cls}"${followAttrs(o)}>${BELL}<span>${esc(label)}</span></button>`;
+  // point an existing trigger at new content (used for the theme page)
+  function setFollow(el, o) {
+    if (!el) return;
+    const set = (k, v) => (v ? el.setAttribute(k, v) : el.removeAttribute(k));
+    set('data-follow-title', o.title); set('data-follow-what', o.what); set('data-follow-feed', o.feed);
+    set('data-follow-ics', o.ics); set('data-follow-ics-name', o.icsName); set('data-follow-github', o.github);
+    set('data-follow-github-kind', o.github ? o.githubKind || 'discussions' : '');
+    if (o.feed && el.tagName === 'A') el.setAttribute('href', o.feed);
+    el.hidden = false;
+  }
+
+  // follow.js builds the dialog's "All ways to follow" link without the preview flag, so carry it over here
+  if (example) {
+    const keepPreview = () => document.querySelectorAll('.follow-dialog .follow-all a').forEach((a) => {
+      const href = a.getAttribute('href');
+      if (href && !/[?&]src=/.test(href)) { const u = new URL(href, location.href); u.searchParams.set('src', 'example'); a.setAttribute('href', u.href); }
+    });
+    new MutationObserver(keepPreview).observe(document.body || document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+    keepPreview();
+  }
+
+  // ------------------------------------------------------------------ page metadata for shared links and search engines
+  function metaTag(attr, key, value) {
+    let m = document.head.querySelector(`meta[${attr}="${key}"]`);
+    if (!m) { m = document.createElement('meta'); m.setAttribute(attr, key); document.head.appendChild(m); }
+    m.setAttribute('content', value);
+  }
+  function seo({ title, description, url, noindex }) {
+    document.title = title;
+    metaTag('property', 'og:title', title); metaTag('name', 'twitter:title', title);
+    if (description !== undefined) { metaTag('name', 'description', description); metaTag('property', 'og:description', description); metaTag('name', 'twitter:description', description); }
+    if (url) {
+      metaTag('property', 'og:url', url);
+      let c = document.head.querySelector('link[rel="canonical"]');
+      if (!c) { c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }
+      c.href = url;
+    }
+    if (noindex) metaTag('name', 'robots', 'noindex');
+  }
+  function feedLink(href, title) {
+    if (example) return;
+    const l = document.createElement('link');
+    l.rel = 'alternate'; l.type = 'application/rss+xml'; l.title = title; l.href = href;
+    document.head.appendChild(l);
+  }
+
+  // ------------------------------------------------------------------ new since your last visit (per browser, per site)
+  const VISIT_KEY = 'ccc:lastVisit:v1' + (example ? ':example' : '');
+  const lastVisit = (() => { try { const v = Number(localStorage.getItem(VISIT_KEY)); return v > 0 ? v : null; } catch { return null; } })();
+  const stampVisit = () => { try { localStorage.setItem(VISIT_KEY, String(Date.now())); } catch { /* storage unavailable */ } };
+  if (!lastVisit) stampVisit(); // first visit: show nothing now, remember the time for the next one
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') stampVisit(); });
+  addEventListener('pagehide', stampVisit);
+  const isNew = (d) => !!lastVisit && Date.parse(d.createdAt) > lastVisit;
+  const newBadge = (d) => (isNew(d) ? '<span class="badge new">New</span>' : '');
+
   // Hacker-News-style gravity: engagement over age, so new posts with replies rise and old ones settle.
   const trendScore = (d) => (1 + (d.upvotes || 0) + 2 * (d.comments || 0)) / Math.pow(Math.max(0, (Date.now() - Date.parse(d.createdAt)) / 864e5) + 2, 1.3);
   const SORTS = {
@@ -63,7 +147,7 @@
   const saved = new Set((() => { try { return JSON.parse(localStorage.getItem(SAVE_KEY) || '[]'); } catch { return []; } })());
   const persist = () => { try { localStorage.setItem(SAVE_KEY, JSON.stringify([...saved])); } catch { /* storage unavailable */ } };
   const ICON_SAVE = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3.5h9a1 1 0 0 1 1 1v12.2l-5.5-3.6-5.5 3.6V4.5a1 1 0 0 1 1-1z"/></svg>';
-  const saveBtn = (d) => `<button type="button" class="save-btn" data-save="${d.number}" aria-pressed="${saved.has(String(d.number))}" aria-label="Save “${esc(d.title)}” for later" title="Save for later">${ICON_SAVE}</button>`;
+  const saveBtn = (d, labelled) => `<button type="button" class="save-btn${labelled ? ' labelled' : ''}" data-save="${d.number}" aria-pressed="${saved.has(String(d.number))}" aria-label="${labelled ? `Save in this browser: “${esc(d.title)}”` : `Save “${esc(d.title)}” in this browser`}" title="Saved posts stay on this device only.">${ICON_SAVE}${labelled ? '<span>Save in this browser</span>' : ''}</button>`;
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-save]');
     if (!b) return;
@@ -191,12 +275,21 @@
     const cat = ctx.cats[d.category] || {};
     const label = ctx.single && d.fields?.kind ? d.fields.kind : (cat.label || d.categoryName || d.category);
     return `<article class="post-card v2" style="--i:${i}">
-      <div class="post-top"><span class="post-type"><span class="dot ${esc(cat.dot || '')}"></span>${esc(label)}</span><span class="top-right">${badge(d, ctx.single)}${saveBtn(d)}</span></div>
+      <div class="post-top"><span class="post-type"><span class="dot ${esc(cat.dot || '')}"></span>${esc(label)}</span><span class="top-right">${newBadge(d)}${badge(d, ctx.single)}${saveBtn(d)}</span></div>
       <h3><a class="card-link" href="${esc(postHref(d))}">${esc(d.title)}</a></h3>
       ${d.excerpt ? `<p class="excerpt">${esc(d.excerpt)}</p>` : ''}
       ${themeChips(d, ctx)}
+      ${remindRow(d)}
       <div class="post-foot">${avatar(d, 22)}<a class="who" href="${esc(memberHref(d.author))}">${esc(d.author)}</a><span aria-hidden="true">·</span><span>${plural(d.comments || 0, 'reply', 'replies')}</span>${d.upvotes ? `<span aria-hidden="true">·</span><span title="Upvotes">↑ ${d.upvotes}</span>` : ''}<span aria-hidden="true">·</span><span>${esc(ago(d.updatedAt))}</span><span class="post-arrow" aria-hidden="true">↗</span></div>
     </article>`;
+  }
+
+  // open calls get a one-click reminder: a calendar file with the deadline and alarms 7 days and 1 day before
+  function remindRow(d) {
+    if (d.category !== 'opportunities') return '';
+    const n = daysUntil(d.fields?.deadline);
+    if (n === null || n < 0) return '';
+    return `<div class="cal-row"><button type="button" class="cal-btn" data-remind="${d.number}" aria-label="Remind me about “${esc(d.title)}”" title="Downloads a calendar file with reminders 7 days and 1 day before the deadline">Remind me</button></div>`;
   }
 
   function calendarLinks(d) {
@@ -220,7 +313,7 @@
     return `<article class="post-card v2 event" style="--i:${i}">
       ${tile}
       <div class="event-body">
-        <div class="post-top"><span class="post-type">${esc(when)}</span><span class="top-right">${badge(d)}${saveBtn(d)}</span></div>
+        <div class="post-top"><span class="post-type">${esc(when)}</span><span class="top-right">${newBadge(d)}${badge(d)}${saveBtn(d)}</span></div>
         <h3><a class="card-link" href="${esc(postHref(d))}">${esc(d.title)}</a></h3>
         ${d.excerpt ? `<p class="excerpt">${esc(d.excerpt)}</p>` : ''}
         ${themeChips(d, ctx)}
@@ -246,30 +339,55 @@
 
   const CARDS = { post: postCard, event: eventCard, person: personCard, compact: compactCard };
 
-  // ICS download for a single event
-  function icsFor(d) {
+  // Calendar files for one event or one deadline (same rules as the exporter: stable UID, stamp from the post, folded lines)
+  const icsText = (v) => String(v || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+  function fold(line) {
+    const enc = new TextEncoder(), dec = new TextDecoder();
+    let bytes = enc.encode(line);
+    const out = [];
+    while (bytes.length > 75) {
+      let cut = 75;
+      while ((bytes[cut] & 0xC0) === 0x80) cut--;
+      out.push(dec.decode(bytes.slice(0, cut)));
+      bytes = new Uint8Array([32, ...bytes.slice(cut)]);
+    }
+    out.push(dec.decode(bytes));
+    return out.join('\r\n');
+  }
+  function icsFor(d, deadline) {
     const f = d.fields || {};
-    const day = parseDay(f.date);
+    const day = parseDay(deadline ? f.deadline : f.date);
     if (!day) return null;
     const ymd = (x) => `${x.getFullYear()}${String(x.getMonth() + 1).padStart(2, '0')}${String(x.getDate()).padStart(2, '0')}`;
     const next = new Date(day); next.setDate(day.getDate() + 1);
-    const text = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
-    const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
-    return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//City Computing Collective//Events//EN', 'BEGIN:VEVENT',
-      `UID:ccc-${d.number}@citycomputingcollective.com`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${ymd(day)}`, `DTEND;VALUE=DATE:${ymd(next)}`,
-      `SUMMARY:${text(d.title)}`, `DESCRIPTION:${text([f.datetime ? 'Time: ' + f.datetime : '', d.excerpt, d.url].filter(Boolean).join('\n'))}`,
-      `URL:${d.url}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n') + '\r\n';
+    const stamp = new Date(Date.parse(d.updatedAt) || 0).toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+    const page = `${SITE}/post.html?n=${d.number}`;
+    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', `PRODID:-//City Computing Collective//${deadline ? 'Deadlines' : 'Events'}//EN`, 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      'BEGIN:VEVENT', `UID:ccc-${deadline ? 'deadline-' : ''}${d.number}@citycomputingcollective.com`, `DTSTAMP:${stamp}`, `LAST-MODIFIED:${stamp}`,
+      `DTSTART;VALUE=DATE:${ymd(day)}`, `DTEND;VALUE=DATE:${ymd(next)}`,
+      `SUMMARY:${icsText(deadline ? 'Deadline: ' + d.title : d.title)}`,
+      `DESCRIPTION:${icsText(deadline
+        ? [`Deadline: ${f.deadline}`, f.kind, d.excerpt, f.official ? 'Official page: ' + f.official : '', page].filter(Boolean).join('\n')
+        : [f.datetime ? 'Time: ' + f.datetime : '', d.excerpt, d.url].filter(Boolean).join('\n'))}`,
+      `URL:${deadline ? page : d.url}`];
+    if (deadline) {
+      [['-P7D', '7 days'], ['-P1D', '1 day']].forEach(([t, label]) => lines.push('BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${icsText(`Deadline: ${d.title} in ${label}`)}`, `TRIGGER:${t}`, 'END:VALARM'));
+    }
+    lines.push('END:VEVENT', 'END:VCALENDAR');
+    return lines.map(fold).join('\r\n') + '\r\n';
   }
   document.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-ics]');
+    const b = e.target.closest('[data-ics], [data-remind]');
     if (!b) return;
+    const deadline = b.hasAttribute('data-remind');
+    const id = deadline ? b.dataset.remind : b.dataset.ics;
     ready.then((ctx) => {
-      const d = ctx.all.find((x) => String(x.number) === b.dataset.ics);
-      const ics = d && icsFor(d);
+      const d = ctx.all.find((x) => String(x.number) === id);
+      const ics = d && icsFor(d, deadline);
       if (!ics) return;
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
-      a.download = `ccc-event-${d.number}.ics`;
+      a.download = `ccc-${deadline ? 'deadline' : 'event'}-${d.number}.ics`;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     });
@@ -291,6 +409,7 @@
     const sync = o.sync === 'url';
     const presetTheme = ctx.themeBySlug[o.themeFrom ? params.get(o.themeFrom) : o.theme]?.label || '';
     const author = o.authorFrom ? params.get(o.authorFrom) : '';
+    const followView = o.followView !== undefined;
 
     let items = ctx.all.filter((d) => !catFilter.length || catFilter.includes(d.category));
     if (o.filter === 'directory') items = items.filter((d) => d.directory);
@@ -338,7 +457,7 @@
         ${hasSort ? `<label class="list-select"><span>Sort</span><select data-k="sort"><option value="trending">Trending</option><option value="activity">Recent activity</option><option value="new">Newest</option><option value="replies">Most replies</option></select></label>` : ''}
       </div>` : ''}
       ${hasFacet ? `<div class="chip-row" role="group" aria-label="Filter ${esc(noun)}"></div>` : ''}
-      ${o.card === 'compact' ? '' : `<div class="list-meta"><p class="result-count" aria-live="polite"></p><button type="button" class="link-btn clear" hidden>Clear filters</button>${hasSaved ? '<button type="button" class="saved-toggle" aria-pressed="false"></button>' : ''}${o.githubSearch !== undefined ? `<a class="link-btn github" href="${REPO}">Search on GitHub ↗</a>` : ''}</div>`}
+      ${o.card === 'compact' ? '' : `<div class="list-meta"><p class="result-count" aria-live="polite"></p><p class="new-count"></p><button type="button" class="link-btn clear" hidden>Clear filters</button>${hasSaved ? '<button type="button" class="saved-toggle" aria-pressed="false"></button>' : ''}${followView ? '<span class="follow-slot"></span>' : ''}${o.githubSearch !== undefined ? `<a class="link-btn github" href="${REPO}">Search on GitHub ↗</a>` : ''}</div>`}
       <div class="list-results"></div>
       <div class="list-more" hidden></div>`);
 
@@ -354,6 +473,8 @@
     const gh = $('.github');
     const header = $('.theme-context');
     const savedBtn = $('.saved-toggle');
+    const newCount = $('.new-count');
+    const followSlot = $('.follow-slot');
     if (input) input.value = state.q;
     if (themeSel) themeSel.value = state.theme;
     if (sortSel) sortSel.value = state.sort;
@@ -371,6 +492,22 @@
       set('sort', state.sort !== defaultSort ? state.sort : ''); set('saved', state.saved ? '1' : '');
       const qs = p.toString();
       history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+    }
+
+    // "Follow this view": no filter is the whole community, one kind of post or one theme has its own feed, a mix has none
+    let followKey = null;
+    function followView_() {
+      if (!followSlot) return;
+      let target = null;
+      if (!state.q.trim() && !state.saved && !(state.facet && state.theme)) {
+        if (state.facet) target = FOLLOW.category(ctx.cats[state.facet] || { slug: state.facet, label: state.facet });
+        else if (state.theme) target = FOLLOW.themeLocal(ctx.themeBySlug[state.theme]);
+        else target = FOLLOW.all;
+      }
+      const key = target ? JSON.stringify(target) : '';
+      if (key === followKey) return;
+      followKey = key;
+      followSlot.innerHTML = target ? followBtn(target, 'Follow this view') : '';
     }
 
     function render(animate) {
@@ -435,6 +572,11 @@
       }
       results.innerHTML = html;
       results.classList.toggle('animate', !!animate && !reduceMotion);
+      if (newCount) {
+        const n = items.filter(isNew).length;
+        newCount.textContent = n ? `${n} new since your last visit` : '';
+      }
+      followView_();
       if (count) count.textContent = active ? `${plural(filtered.length, one, noun)} of ${items.length}` : plural(items.length, one, noun);
       if (clear) clear.hidden = !active;
       if (gh) gh.href = state.q.trim() ? `${REPO}?discussions_q=${encodeURIComponent(state.q.trim())}` : REPO;
@@ -509,6 +651,8 @@
     const t = ctx.themeBySlug[slug];
     const slot = (n) => el.querySelector(`[data-slot="${n}"]`);
     if (!t) {
+      seo({ title: 'Theme not found — City Computing Collective', noindex: true });
+      document.querySelectorAll('[data-slot="feed"], [data-slot="empty-follow"]').forEach((b) => { b.hidden = true; });
       slot('title').textContent = 'Theme not found.';
       slot('blurb').textContent = 'Choose one of the eight research themes below.';
       document.querySelectorAll('[data-hide-target]').forEach((s) => { s.hidden = true; });
@@ -516,8 +660,8 @@
       return;
     }
     const posts = ctx.all.filter((d) => (d.themes || []).includes(t.label));
-    document.title = `${t.label} — City Computing Collective`;
-    document.querySelector('meta[name="description"]')?.setAttribute('content', `${t.label}: ${t.blurb} Questions, collaborations, projects, data, events, and people in the City Computing Collective.`);
+    seo({ title: `${t.label} — City Computing Collective`, url: `${SITE}/theme.html?t=${t.slug}`,
+      description: `${t.label}: ${t.blurb} Questions, collaborations, projects, data, events, and people in the City Computing Collective.` });
     slot('eyebrow').textContent = `Research theme · ${t.code}`;
     slot('title').textContent = t.label;
     slot('blurb').textContent = t.blurb || '';
@@ -526,7 +670,7 @@
     slot('stats').innerHTML = posts.length
       ? [[posts.length, 'post', 'posts'], [people, 'contributor', 'contributors'], [openN, 'open call or event', 'open calls & events']].map(([n, a, b]) => `<span><strong>${n}</strong> ${n === 1 ? a : b}</span>`).join('')
       : '<span>No posts yet</span>';
-    slot('feed').href = `feeds/theme-${t.slug}.xml`;
+    setFollow(slot('feed'), FOLLOW.theme(t));
     slot('browse').href = link(`community.html?theme=${t.slug}#browse`);
     el.querySelectorAll('[data-compose]').forEach((b) => { b.dataset.theme = t.label; });
     slot('switch').innerHTML = ctx.themes.map((x) => x.slug === t.slug
@@ -541,6 +685,7 @@
       emptyPanel.hidden = posts.length > 0;
       emptyPanel.querySelector('[data-slot="empty-theme-name"]').textContent = t.label;
       emptyPanel.querySelectorAll('[data-compose]').forEach((b) => { b.dataset.theme = t.label; });
+      setFollow(emptyPanel.querySelector('[data-slot="empty-follow"]'), FOLLOW.theme(t));
     }
     const alt = document.querySelector('link[data-theme-feed]');
     if (alt) { alt.href = `feeds/theme-${t.slug}.xml`; alt.title = `${t.label} — City Computing Collective`; }
@@ -552,6 +697,7 @@
     const posts = ctx.all.filter((d) => d.author === login);
     const slot = (n) => el.querySelector(`[data-slot="${n}"]`);
     if (!posts.length) {
+      seo({ title: `${login ? 'No public posts' : 'Member not found'} — City Computing Collective`, noindex: true });
       slot('name').textContent = login ? `No public posts by ${login}.` : 'Member not found.';
       slot('role').textContent = 'Members appear here once they post in the community.';
       slot('avatar').innerHTML = '';
@@ -563,7 +709,9 @@
     const themeCount = {};
     posts.forEach((d) => (d.themes || []).forEach((label) => { themeCount[label] = (themeCount[label] || 0) + 1; }));
     const topThemes = Object.entries(themeCount).sort((a, b) => b[1] - a[1]).map(([label]) => ctx.themeByLabel[label]).filter(Boolean);
-    document.title = `${f.role || login} — City Computing Collective`;
+    seo({ title: `${f.role || login} — City Computing Collective`, url: `${SITE}/member.html?u=${encodeURIComponent(login)}`,
+      description: `${f.role || login} in the City Computing Collective: ${plural(posts.length, 'public post')} and the research themes they work on.` });
+    feedLink(`feeds/member-${login.replace(/[^A-Za-z0-9_-]/g, '_')}.xml`, `${f.role || login} — City Computing Collective`);
     slot('avatar').innerHTML = avatar(posts[0], 72);
     slot('name').textContent = f.role || login;
     slot('role').innerHTML = [f.role ? `<span>@${esc(login)}</span>` : '', f.location ? `<span>${esc(f.location)}</span>` : '', `<span>Active ${esc(ago(posts.map((d) => d.updatedAt).sort().pop()))}</span>`].filter(Boolean).join('<span aria-hidden="true">·</span>');
@@ -574,7 +722,7 @@
     slot('stats').innerHTML = [[posts.length, 'post', 'posts'], [replies, 'reply received', 'replies received'], [topThemes.length, 'theme', 'themes']]
       .map(([n, a, b]) => `<div><strong>${n}</strong><span>${n === 1 ? a : b}</span></div>`).join('');
     const gh = posts[0].authorUrl || `https://github.com/${encodeURIComponent(login)}`;
-    slot('links').innerHTML = `<a class="button light" href="${esc(gh)}" rel="noopener">GitHub profile ↗</a>${intro ? `<a class="button light" href="${esc(postHref(intro))}">Introduction</a>` : ''}`;
+    slot('links').innerHTML = `<a class="button light" href="${esc(gh)}" rel="noopener">GitHub profile ↗</a>${intro ? `<a class="button light" href="${esc(postHref(intro))}">Introduction</a>` : ''}${followBtn(FOLLOW.member(login, f.role || login), `Follow ${f.role || login}`, 'button light follow-btn')}`;
     if (!intro) slot('note').hidden = false;
   }
 
@@ -612,20 +760,20 @@
     const d = ctx.all.find((x) => String(x.number) === num);
     const slot = (k) => el.querySelector(`[data-slot="${k}"]`);
     if (!d) {
+      seo({ title: 'Post not found — City Computing Collective', noindex: true });
       slot('title').textContent = 'Post not found.';
       slot('body').innerHTML = `<p class="muted-note">It may have been removed, or the site has not refreshed since it was posted. <a href="${REPO}">Browse the discussions on GitHub</a>.</p>`;
       slot('side').hidden = true;
       return;
     }
     const cat = ctx.cats[d.category] || {};
-    document.title = `${d.title} — City Computing Collective`;
-    document.querySelector('meta[name="description"]')?.setAttribute('content', d.excerpt || d.title);
+    seo({ title: `${d.title} — City Computing Collective`, url: `${SITE}/post.html?n=${d.number}`, description: d.excerpt || d.title });
     slot('crumbs').innerHTML = `<a href="${esc(link('community.html#browse'))}">Community</a><span aria-hidden="true">›</span><a href="${esc(link('community.html?category=' + d.category + '#browse'))}">${esc(cat.label || d.categoryName)}</a>`;
     slot('title').textContent = d.title;
     slot('meta').innerHTML = `${avatar(d, 32)}<div><a class="who" href="${esc(memberHref(d.author))}">${esc(d.author)}</a><span>posted ${esc(ago(d.createdAt))}${d.updatedAt !== d.createdAt ? ` · active ${esc(ago(d.updatedAt))}` : ''}</span></div><span class="top-right">${badge(d, true)}</span>`;
     slot('themes').innerHTML = themeChips(d, ctx, 8).replace(/^<div class="meta-row">|<\/div>$/g, '');
     const cal = d.category === 'events-meetups' ? calendarLinks(d) : '';
-    slot('actions').innerHTML = `<a class="button primary" href="${esc(d.url)}">Reply on GitHub ↗</a>${saveBtn(d).replace('class="save-btn"', 'class="save-btn labelled"').replace('</svg>', '</svg><span>Save</span>')}<button type="button" class="button light" data-copy-link>Copy link</button>${cal}`;
+    slot('actions').innerHTML = `<a class="button primary" href="${esc(d.url)}">Reply on GitHub ↗</a>${followBtn({ title: d.title, what: 'New replies to this discussion.', github: d.url, githubKind: 'thread' }, 'Follow replies', 'button light follow-btn js-follow-replies')}${saveBtn(d, true)}<button type="button" class="button light" data-copy-link>Copy link</button>${cal}`;
 
     const related = ctx.all.filter((x) => x !== d).map((x) => [x, (x.themes || []).filter((t) => (d.themes || []).includes(t)).length + (x.category === d.category ? 0.5 : 0)])
       .filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1] || trendScore(b[0]) - trendScore(a[0])).slice(0, 5).map(([x]) => x);
@@ -641,6 +789,10 @@
 
     slot('body').innerHTML = '<div class="skeleton"><i></i><i></i><i></i></div>';
     getJSON(`data/${example ? 'examples/' : ''}posts/${d.number}.json`).then((post) => {
+      // the reply feed exists only for posts that have a post file
+      const fb = el.querySelector('.js-follow-replies');
+      if (fb) fb.setAttribute('data-follow-feed', FOLLOW.replies(d.number));
+      feedLink(`feeds/post-${d.number}.xml`, `Replies to ${d.title} — City Computing Collective`);
       slot('body').innerHTML = cleanHTML(post.bodyHTML) || `<p>${esc(d.excerpt)}</p>`;
       const comments = (post.comments || []).slice().sort((a, b) => (b.isAnswer && d.category === 'q-a') - (a.isAnswer && d.category === 'q-a') || a.createdAt.localeCompare(b.createdAt));
       const reply = (c, nested) => `
@@ -687,7 +839,9 @@
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-copy-link]');
     if (!b) return;
-    const url = location.href.replace(/[?&]src=example/, '');
+    const u = new URL(location.href);
+    u.searchParams.delete('src');
+    const url = u.toString();
     navigator.clipboard?.writeText(url).then(() => { b.textContent = 'Link copied'; setTimeout(() => { b.textContent = 'Copy link'; }, 1500); }, () => {});
   });
 
@@ -792,5 +946,6 @@
   });
 
   // ------------------------------------------------------------------ public API for palette.js
-  window.CCC = { ready, esc, ago, avatar, link, saved, trendScore, REPO, SITE, example, postHref: (d) => postHref(d), openComposer: (slug, theme) => openComposer(slug, theme) };
+  window.CCC = { ready, esc, ago, avatar, link, abs, saved, trendScore, REPO, SITE, example, FOLLOW,
+    follow: (o) => (window.Follow ? window.Follow.open(o) : (location.href = link('follow.html'))), postHref: (d) => postHref(d), openComposer: (slug, theme) => openComposer(slug, theme) };
 })();

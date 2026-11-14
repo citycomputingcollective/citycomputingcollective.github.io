@@ -1,6 +1,7 @@
 name: Refresh discussions feed
 
-# Exports GitHub Discussions to data/discussions.json so the static site can list, filter, and sort them.
+# Exports GitHub Discussions to data/discussions.json so the static site can list, filter, and sort them,
+# and writes the feeds (RSS and calendars) and sitemap.xml that people follow.
 # Runs on a schedule, on demand, and whenever a discussion or comment changes.
 on:
   schedule:
@@ -36,14 +37,17 @@ jobs:
           pip install --quiet pyyaml
           python .github/scripts/export_discussions.py
 
+      - name: Check the generated feeds
+        run: python .github/scripts/check_feeds.py
+
       - name: Commit if changed
         run: |
-          if [ -z "$(git status --porcelain -- data/discussions.json data/posts feeds)" ]; then
+          if [ -z "$(git status --porcelain -- data feeds sitemap.xml)" ]; then
             echo "No changes to commit"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data/discussions.json data/posts feeds
+          git add -A data feeds sitemap.xml
           git commit -m "Refresh discussions feed"
           git push

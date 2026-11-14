@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//City Computing Collective//Deadlines//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:City Computing Collective deadlines
+X-WR-CALDESC:Deadlines of calls\, grants\, and positions posted in the comm
+ unity\, with reminders 7 days and 1 day before.
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
+END:VCALENDAR

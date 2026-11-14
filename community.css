@@ -342,7 +342,7 @@ dialog.compose::backdrop{background:rgba(16,42,46,.45);backdrop-filter:blur(3px)
   .stats{grid-template-columns:repeat(2,1fr)}
   .start-grid{grid-template-columns:repeat(2,1fr)}
 }
-@media(max-width:940px){
+@media(max-width:1080px){
   .nav{gap:12px}
   .nav-toggle{display:block}
   .nav nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--concrete);border-bottom:1px solid var(--line);padding:6px 16px 14px;box-shadow:var(--shadow)}
@@ -620,3 +620,69 @@ footer a:hover{color:var(--asphalt)}
   footer{flex-direction:column;padding-left:16px;padding-right:16px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ---------------------------------------------------------------- follow: header bell, buttons, subscription centre */
+:root{
+  --follow-bg:var(--surface);
+  --follow-fg:var(--asphalt);
+  --follow-muted:#506060;
+  --follow-line:#c5cfca;
+  --follow-surface:var(--concrete);
+  --follow-accent:var(--cyan-ink);
+  --follow-accent-fg:#fff;
+  --follow-radius:12px;
+  --follow-mono:var(--mono);
+}
+/* the site-wide section{padding:68px 0} rule must not reach the dialog's sections */
+.follow-dialog .follow-section{padding-bottom:0}
+.nav-follow{display:inline-grid;place-items:center;flex:0 0 auto;width:36px;height:36px;margin-right:6px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;transition:border-color .15s,color .15s}
+.nav-follow svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-follow:hover,.nav-follow[aria-current="page"]{border-color:var(--asphalt);color:var(--asphalt)}
+@media(pointer:coarse){.nav-follow{width:44px;height:44px}}
+@media(max-width:1080px){.nav-follow{margin-right:0}}
+@media(max-width:520px){
+  .nav{gap:8px}
+  .brand{white-space:normal;line-height:1.12;font-size:15px;min-width:0}
+}
+.button.follow-btn{min-height:0;gap:8px;padding:11px 17px;border:1px solid var(--asphalt);border-radius:999px;background:var(--surface);color:var(--asphalt);font-size:14px;font-weight:800}
+.button.follow-btn:hover{border-color:var(--asphalt)}
+.button.follow-btn:focus-visible{outline-color:var(--cyan)}
+.post-actions .button.follow-btn{padding:9px 15px;font-size:13.5px}
+.follow-btn.small{min-height:32px;padding:5px 12px;font-size:13px;font-weight:750;border-radius:999px;background:var(--surface);color:var(--asphalt)}
+@media(pointer:coarse){.button.follow-btn,.follow-btn.small{min-height:44px}}
+.follow-btn[hidden]{display:none}
+.follow-slot:empty{display:none}
+.follow-slot{display:inline-flex}
+.list-meta .follow-slot{margin-left:auto}
+.list-meta .follow-slot+.link-btn.github{margin-left:0}
+.head-links .follow-btn{align-self:center}
+.empty-buttons{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.notify-note{margin:8px 0 0!important;font-size:14px}
+.empty-notify{display:flex;gap:12px 16px;flex-wrap:wrap;align-items:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.empty-notify p{margin:0;color:var(--muted);font-size:15px}
+.badge.new{background:var(--lime);color:#2c4310}
+.new-count{margin:0;font-size:13px;font-weight:750;color:#2c4310;background:var(--lime);border-radius:999px;padding:3px 10px}
+.footer-links a,.footer-base a,.crumbs a{display:inline-block;padding:3px 0;line-height:1.5;min-height:24px}
+.follow-list{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.follow-item{display:flex;gap:12px 24px;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.follow-item:last-child{border-bottom:0}
+.follow-item-text{min-width:0}
+.follow-item h3{font-size:17px;margin:0 0 3px;letter-spacing:-.02em}
+.follow-item p{margin:0;color:var(--muted);font-size:15px;max-width:640px}
+.follow-item-actions{display:flex;gap:10px 16px;align-items:center;flex-wrap:wrap;flex:0 0 auto;justify-content:flex-end}
+.raw-link{font-size:13px;font-weight:700;color:var(--cyan-ink);display:inline-block;padding:4px 0}
+.follow-how{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.follow-how article{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}
+.follow-how h3{margin:0 0 8px;font-size:18px}
+.follow-how p{margin:0;color:var(--muted);font-size:15px}
+.follow-how strong,.follow-stop strong{color:var(--asphalt)}
+.follow-stop{margin:0 0 18px;padding-left:20px;color:var(--muted);display:grid;gap:6px}
+.follow-privacy{margin:0;padding:14px 18px;border:1px dashed var(--line-2);border-radius:14px;color:var(--muted);font-size:15px;max-width:760px}
+.follow-intro{padding-bottom:0;border-top:0}
+.follow-intro .section-intro{margin-bottom:0}
+@media(max-width:720px){
+  .follow-item{flex-direction:column;align-items:stretch}
+  .follow-item-actions{justify-content:space-between}
+  .follow-how{grid-template-columns:1fr}
+}
+.new-count:empty{display:none}

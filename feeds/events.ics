@@ -4,5 +4,7 @@ PRODID:-//City Computing Collective//Events//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 X-WR-CALNAME:City Computing Collective events
-X-WR-TIMEZONE:UTC
+X-WR-CALDESC:Talks\, clinics\, and meetups posted in the community.
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
 END:VCALENDAR

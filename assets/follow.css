@@ -1,0 +1,177 @@
+/*
+ * follow.css - styles for the shared Follow dialog and the .follow-btn trigger.
+ * Identical on every site. Each site sets these custom properties on :root
+ * (the dialog lives under <body>, so :root or body both work):
+ *   --follow-bg  --follow-fg  --follow-muted  --follow-line  --follow-surface
+ *   --follow-accent  --follow-accent-fg  --follow-radius  --follow-mono
+ * Every use below has a fallback, so the component also works with none set.
+ */
+
+html.follow-open { overflow: hidden; }
+
+/* ---------- generic trigger ---------- */
+.follow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-height: 2.25rem;
+  padding: .45rem .9rem;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--follow-fg, #1a1a1a);
+  background: var(--follow-surface, #f4f4f5);
+  border: 1px solid var(--follow-line, #c9c9cf);
+  border-radius: var(--follow-radius, 8px);
+  text-decoration: none;
+  cursor: pointer;
+}
+.follow-btn:hover { border-color: var(--follow-accent, #1d4ed8); }
+.follow-btn:focus-visible { outline: 2px solid var(--follow-accent, #1d4ed8); outline-offset: 2px; }
+.follow-btn svg, .follow-btn .follow-icon { flex: none; width: 1.1em; height: 1.1em; }
+@media (pointer: coarse) { .follow-btn { min-height: 2.75rem; } }
+
+/* ---------- dialog ---------- */
+.follow-dialog {
+  box-sizing: border-box;
+  width: min(34rem, calc(100vw - 1rem));
+  max-width: none;
+  max-height: calc(100vh - 1rem);
+  max-height: calc(100dvh - 1rem);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  color: var(--follow-fg, #1a1a1a);
+  background: var(--follow-bg, #ffffff);
+  border: 1px solid var(--follow-line, #c9c9cf);
+  border-radius: var(--follow-radius, 8px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+  font: inherit;
+  line-height: 1.5;
+}
+.follow-dialog::backdrop { background: rgba(0, 0, 0, .55); }
+.follow-dialog *, .follow-dialog *::before, .follow-dialog *::after { box-sizing: border-box; }
+.follow-dialog [hidden] { display: none !important; }
+
+.follow-panel { padding: 1.25rem 1.25rem 1rem; }
+@media (max-width: 480px) { .follow-panel { padding: 1rem .875rem .875rem; } }
+
+.follow-head { display: flex; align-items: flex-start; gap: .75rem; }
+.follow-head-text { flex: 1; min-width: 0; }
+.follow-title { margin: 0; font-size: 1.25rem; line-height: 1.3; font-weight: 700; overflow-wrap: anywhere; color: var(--follow-fg, #1a1a1a); }
+.follow-what { margin: .35rem 0 0; color: var(--follow-muted, #555560); }
+
+.follow-close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -.5rem -.5rem 0 0;
+  padding: 0;
+  color: var(--follow-fg, #1a1a1a);
+  background: transparent;
+  border: 0;
+  border-radius: var(--follow-radius, 8px);
+  cursor: pointer;
+}
+.follow-close:hover { background: var(--follow-surface, #f4f4f5); }
+.follow-close:focus-visible, .follow-action:focus-visible, .follow-field:focus-visible,
+.follow-dialog a:focus-visible { outline: 2px solid var(--follow-accent, #1d4ed8); outline-offset: 2px; }
+
+.follow-status {
+  margin: 1rem 0 0;
+  padding: .65rem .8rem;
+  color: var(--follow-fg, #1a1a1a);
+  background: var(--follow-surface, #f4f4f5);
+  border: 1px solid var(--follow-line, #c9c9cf);
+  border-radius: var(--follow-radius, 8px);
+}
+.follow-status:empty { display: none; }
+
+.follow-section { margin-top: 1.25rem; padding-top: 1rem; padding-bottom: 0; border-top: 1px solid var(--follow-line, #c9c9cf); }
+.follow-status + .follow-section { margin-top: 1rem; }
+.follow-body > .follow-section:first-child { margin-top: 1rem; }
+.follow-h { margin: 0 0 .35rem; font-size: 1rem; line-height: 1.3; font-weight: 700; color: var(--follow-fg, #1a1a1a); }
+.follow-text { margin: 0 0 .75rem; color: var(--follow-muted, #555560); }
+.follow-small { margin: .65rem 0 0; font-size: .875rem; }
+.follow-note { margin: .5rem 0 0; font-size: .875rem; color: var(--follow-muted, #555560); }
+.follow-label { display: block; margin: 0 0 .35rem; font-weight: 600; }
+
+.follow-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+.follow-copy { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .65rem; }
+.follow-row + .follow-copy { margin-top: .65rem; }
+
+/* actions: links and buttons share one look */
+.follow-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: .5rem .9rem;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  color: var(--follow-fg, #1a1a1a);
+  background: var(--follow-surface, #f4f4f5);
+  border: 1px solid var(--follow-line, #c9c9cf);
+  border-radius: var(--follow-radius, 8px);
+  cursor: pointer;
+}
+.follow-action:hover { border-color: var(--follow-accent, #1d4ed8); }
+.follow-action.follow-primary {
+  color: var(--follow-accent-fg, #ffffff);
+  background: var(--follow-accent, #1d4ed8);
+  border-color: var(--follow-accent, #1d4ed8);
+}
+.follow-action.follow-primary:hover { filter: brightness(1.1); }
+
+.follow-field {
+  flex: 1 1 12rem;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: .5rem .7rem;
+  font-family: var(--follow-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: .875rem;
+  color: var(--follow-fg, #1a1a1a);
+  background: var(--follow-bg, #ffffff);
+  border: 1px solid var(--follow-line, #c9c9cf);
+  border-radius: var(--follow-radius, 8px);
+}
+.follow-field.follow-email { font-family: inherit; font-size: 1rem; }
+
+.follow-dialog a:not(.follow-action) { color: var(--follow-accent, #1d4ed8); text-underline-offset: .15em; }
+.follow-small a { display: inline-block; padding: .65rem 0; margin: -.65rem 0; }
+
+.follow-foot { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--follow-line, #c9c9cf); }
+.follow-privacy { margin: 0 0 .5rem; font-size: .875rem; color: var(--follow-muted, #555560); }
+.follow-all { margin: 0; font-size: .9375rem; }
+.follow-all a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; }
+
+.follow-sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 400px) {
+  .follow-row > .follow-action, .follow-copy > .follow-action { flex: 1 1 100%; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .follow-dialog[open] { animation: follow-in .16s ease-out; }
+  .follow-dialog[open]::backdrop { animation: follow-fade .16s ease-out; }
+  .follow-btn, .follow-action { transition: border-color .12s, background-color .12s; }
+}
+@keyframes follow-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes follow-fade { from { opacity: 0; } to { opacity: 1; } }
