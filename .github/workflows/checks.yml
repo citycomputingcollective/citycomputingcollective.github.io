@@ -1,7 +1,7 @@
 name: Site checks
 
 # Keeps the discussion templates and the website's taxonomy in step,
-# and makes sure the exporter still runs against the current templates.
+# makes sure the exporter still runs against the current templates, and validates the generated feeds.
 on:
   pull_request:
   push:
@@ -10,6 +10,9 @@ on:
       - ".github/DISCUSSION_TEMPLATE/**"
       - ".github/scripts/**"
       - "data/taxonomy.json"
+      - "feeds/**"
+      - "sitemap.xml"
+      - "follow.html"
   workflow_dispatch:
 
 permissions:
@@ -26,5 +29,7 @@ jobs:
       - run: pip install --quiet pyyaml
       - name: Templates use the themes in data/taxonomy.json
         run: python .github/scripts/export_discussions.py --check-templates
+      - name: Feeds, calendars, sitemap, and follow.html are valid
+        run: python .github/scripts/check_feeds.py
       - name: Example data parses
         run: python -c "import json; json.load(open('data/examples/discussions.json', encoding='utf-8'))"

@@ -14,6 +14,7 @@
     ['Opportunities & events', 'opportunities.html', 'Open calls by deadline, events by date'],
     ['About & governance', 'about.html', 'Mission, rules, and how this site works'],
     ['Join', 'join.html', 'Create an account and introduce yourself'],
+    ['Follow', 'follow.html', 'Choose what to follow and how to receive it'],
   ];
   const ICON = {
     action: '<path d="M10 4v12M4 10h12"/>',
@@ -57,6 +58,21 @@
     dialog.addEventListener('close', () => document.documentElement.classList.remove('dialog-open'));
   }
 
+  // Follow actions open the shared follow dialog (assets/follow.js) for the main targets
+  function followActions(ctx) {
+    const F = C.FOLLOW;
+    const more = 'follow subscribe notify rss email calendar';
+    const open = (o) => () => C.follow(o);
+    return [
+      { kind: 'action', title: 'Follow all discussions', sub: 'By email, in a feed reader, or on GitHub', extra: more, run: open(F.all) },
+      { kind: 'action', title: 'Follow open calls', sub: 'New calls and a calendar of their deadlines', extra: more, run: open(F.openCalls) },
+      { kind: 'action', title: 'Follow events', sub: 'New events and a calendar to subscribe to', extra: more, run: open(F.events) },
+      { kind: 'action', title: 'Follow unanswered questions', sub: 'Questions that still need an answer', extra: more, run: open(F.unanswered) },
+      ...ctx.themes.map((t) => ({ kind: 'action', title: `Follow ${t.label}`, sub: 'Discussions here and releases across the network', extra: more, run: open(F.theme(t)) })),
+      { kind: 'action', title: 'All ways to follow', sub: 'Every feed, calendar, and channel on one page', extra: more, href: 'follow.html' },
+    ];
+  }
+
   function loadSources() {
     if (sources) return sources;
     sources = C.ready.then((ctx) => {
@@ -64,6 +80,7 @@
         { kind: 'action', title: 'Start a post', sub: 'Choose a kind of post and see what its form asks for', run: () => C.openComposer() },
         ...ctx.categories.filter((c) => c.action).map((c) => ({ kind: 'action', title: c.action, sub: c.summary || '', run: () => C.openComposer(c.slug) })),
         { kind: 'action', title: 'Saved posts', sub: 'Posts you bookmarked in this browser', href: 'community.html?saved=1#browse' },
+        ...followActions(ctx),
       ];
       const pages = PAGES.map(([title, href, sub]) => ({ kind: 'page', title, sub, href }));
       const themes = ctx.themes.map((t) => ({ kind: 'theme', title: t.label, sub: `${t.code} · ${t.blurb || ''}`, href: `theme.html?t=${t.slug}` }));
@@ -102,7 +119,7 @@
     const pick = (arr, n) => arr.map((x) => [x, match(x, terms)]).filter(([, s]) => s > 0)
       .sort((a, b) => b[1] - a[1] || (b[0].score || 0) - (a[0].score || 0)).slice(0, n).map(([x]) => x);
     const groups = q
-      ? [['Discussions', pick(src.posts, 6)], ['People', pick(src.people, 4)], ['Themes', pick(src.themes, 4)], ['Pages', pick(src.pages, 4)], ['Actions', pick(src.actions, 4)]]
+      ? [['Discussions', pick(src.posts, 6)], ['People', pick(src.people, 4)], ['Themes', pick(src.themes, 4)], ['Pages', pick(src.pages, 4)], ['Actions', pick(src.actions, 6)]]
       : [['Actions', src.actions.slice(0, 4)], ['Trending', src.posts.slice().sort((a, b) => b.score - a.score).slice(0, 5)], ['Research themes', src.themes], ['Pages', src.pages]];
     items = [];
     let html = '';
@@ -142,7 +159,7 @@
   function run(item, newTab) {
     if (!item) return;
     if (item.run) { dialog.close(); setTimeout(item.run, 0); return; }
-    const href = item.external ? item.href : link(item.href);
+    const href = item.external ? item.href : C.abs(link(item.href));
     if (newTab) { window.open(href, '_blank', 'noopener'); return; }
     dialog.close();
     location.href = href;

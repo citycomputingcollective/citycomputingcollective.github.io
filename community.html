@@ -19,6 +19,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102a2e'/%3E%3Cpath d='M12 52L52 12' stroke='%232aa8b4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='7' fill='%23f36f45'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23f36f45'/%3E%3C/svg%3E">
   <link rel="alternate" type="application/rss+xml" title="City Computing Collective — all discussions" href="feeds/all.xml">
+  <link rel="stylesheet" href="assets/follow.css">
   <link rel="stylesheet" href="community.css">
 </head>
 <body>
@@ -27,6 +28,7 @@
     <div class="nav">
       <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>City Computing Collective</a>
       <button class="nav-search" type="button" data-palette hidden aria-label="Search the community"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
+      <a class="nav-follow" href="follow.html" aria-label="Follow updates" title="Follow updates"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></a>
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       <nav id="site-nav" aria-label="Primary">
         <a href="community.html" aria-current="page">Community</a>
@@ -57,7 +59,7 @@
     <section class="explorer" id="browse" aria-labelledby="browse-title">
       <h2 class="visually-hidden" id="browse-title">Browse discussions</h2>
       <div class="explorer-shell">
-        <div data-view="list" data-controls="search,theme,sort,facet" data-facet="category" data-sync="url" data-sort="trending" data-page="12" data-label="posts" data-label-one="post" data-theme-header data-github-search data-offer-compose data-saved-toggle>
+        <div data-view="list" data-controls="search,theme,sort,facet" data-facet="category" data-sync="url" data-sort="trending" data-page="12" data-label="posts" data-label-one="post" data-theme-header data-github-search data-offer-compose data-saved-toggle data-follow-view>
           <div class="empty empty-rich">
             <div class="empty-head"><span class="empty-badge">Early community</span><strong>The first posts set the tone.</strong><p>There are no discussions yet. Each kind of post has a short form, so a first post takes a few minutes.</p></div>
             <div class="empty-actions">
@@ -66,6 +68,7 @@
               <a class="start-card" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=find-collaborators" data-compose="find-collaborators"><strong><span class="dot orange"></span>Find collaborators</strong><span>A research question that needs other methods or local knowledge.</span></a>
               <a class="start-card" href="https://github.com/citycomputingcollective/citycomputingcollective.github.io/discussions/new?category=project-showcase" data-compose="project-showcase"><strong><span class="dot "></span>Share a project</strong><span>A project at any stage, and how others can contribute.</span></a>
             </div>
+            <div class="empty-notify"><p>Be told when the first one is added.</p><a class="button light follow-btn" href="feeds/all.xml" data-follow data-follow-title="All discussions" data-follow-what="Every new discussion in the City Computing Collective." data-follow-feed="feeds/all.xml" data-follow-github="https://github.com/citycomputingcollective/citycomputingcollective.github.io" data-follow-github-kind="discussions" data-follow-newsletter="true"><svg class="follow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Get notified</span></a></div>
           </div>
           <p class="feed-note"><i aria-hidden="true"></i>Mirrored from GitHub Discussions.</p>
         </div>
@@ -97,8 +100,8 @@
             <div class="side-list"><a href="about.html#governance">Describe the city and the question<small>Avoid context-free technical posts.</small></a><a href="resources.html#share">Document data rights and limits<small>Share only material you may disclose.</small></a><a href="about.html#governance">Be explicit about credit<small>Set expectations before collaborating.</small></a></div>
           </div>
           <div class="panel">
-            <p class="panel-title">Subscribe</p>
-            <div class="side-list"><a href="feeds/all.xml">RSS: every new discussion<small>Or follow one theme from its hub.</small></a><a href="feeds/events.ics">Calendar: community events<small>Add this URL to Google, Apple, or Outlook Calendar.</small></a></div>
+            <p class="panel-title">Follow</p>
+            <div class="side-list"><a href="feeds/all.xml" data-follow data-follow-title="All discussions" data-follow-what="Every new discussion in the City Computing Collective." data-follow-feed="feeds/all.xml" data-follow-github="https://github.com/citycomputingcollective/citycomputingcollective.github.io" data-follow-github-kind="discussions" data-follow-newsletter="true">Every new discussion<small>By email, in a feed reader, or on GitHub.</small></a><a href="feeds/events.ics" data-follow data-follow-title="Events" data-follow-what="Community events, added to your calendar." data-follow-ics="feeds/events.ics" data-follow-ics-name="City Computing Collective events">Community events<small>Add them to your calendar.</small></a><a href="follow.html">All ways to follow<small>Kinds of post, research themes, and deadlines.</small></a></div>
           </div>
         </aside>
       </div>
@@ -131,9 +134,10 @@
     </ul>
     <div class="footer-base">
       <span>&copy; 2026 City Computing Collective &middot; Founded by <a href="https://yuxuancai.com">Yuxuan Cai</a></span>
-      <div class="footer-links"><a href="about.html#governance">Governance</a><a href="join.html">Join</a><a href="https://github.com/citycomputingcollective">GitHub</a></div>
+      <div class="footer-links"><a href="about.html#governance">Governance</a><a href="join.html">Join</a><a href="follow.html">Follow</a><a href="https://github.com/citycomputingcollective">GitHub</a></div>
     </div>
   </footer>
+  <script src="assets/follow.js"></script>
   <script src="assets/site.js"></script>
   <script src="assets/palette.js"></script>
 </body>
